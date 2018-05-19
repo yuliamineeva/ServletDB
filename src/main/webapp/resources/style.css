@@ -65,6 +65,21 @@ body {
     height: 100%;
 }
 
+label, input[type=text] {
+    display: inline-block;
+    vertical-align: middle;
+    horiz-align: center;
+}
+
+label {
+    width: 120px;
+    text-align: right;
+}
+
+input[type=text] {
+    width: 49%;
+}
+
 H1 {
     font-size: 30px;
     padding: 10px 20px 10px 20px;

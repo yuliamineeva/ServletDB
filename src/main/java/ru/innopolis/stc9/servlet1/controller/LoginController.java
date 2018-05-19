@@ -22,6 +22,7 @@ public class LoginController extends HttpServlet {
         logger.info("Received request for login page");
         req.setCharacterEncoding("UTF-8");
         resp.setCharacterEncoding("UTF-8");
+        req.setAttribute("message", "Введите логин и пароль");
         req.getRequestDispatcher("/login.jsp").forward(req, resp);
     }
 
