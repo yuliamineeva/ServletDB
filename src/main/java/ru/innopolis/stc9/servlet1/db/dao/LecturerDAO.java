@@ -49,6 +49,18 @@ public class LecturerDAO implements I_LecturerDAO {
     }
 
     @Override
+    public Lecturer getLecturerByLogin(String login) throws SQLException {
+        Connection connection = connectionManager.getConnection();
+        PreparedStatement statement = connection.prepareStatement("SELECT * " +
+                "FROM lecturer WHERE login = ?");
+        statement.setString(1, login);
+        ResultSet resultSet = statement.executeQuery();
+        Lecturer lecturer = getlecturerFromResultset(resultSet);
+        connection.close();
+        return lecturer;
+    }
+
+    @Override
     public Lecturer getLecturerById(int id) throws SQLException {
         Connection connection = connectionManager.getConnection();
         PreparedStatement statement = connection.prepareStatement("SELECT * " +

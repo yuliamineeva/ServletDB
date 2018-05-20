@@ -10,6 +10,8 @@ public interface I_LecturerDAO {
 
     public List<Lecturer> getAllLecturers() throws SQLException;
 
+    public Lecturer getLecturerByLogin(String login) throws SQLException;
+
     public Lecturer getLecturerById(int id) throws SQLException;
 
     public boolean updateLecturer(Lecturer lecturer) throws SQLException;

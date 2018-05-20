@@ -50,6 +50,21 @@ public class StudentDAO implements I_StudentDAO {
     }
 
     @Override
+    public Student getStudentByLogin(String login) throws SQLException {
+        Connection connection = connectionManager.getConnection();
+        PreparedStatement statement = connection.prepareStatement("SELECT * " +
+                "FROM student WHERE login = ?");
+        statement.setString(1, login);
+        ResultSet resultSet = statement.executeQuery();
+        Student student = null;
+        if (resultSet.next()) {
+            student = getStudentFromResultset(resultSet);
+        }
+        connection.close();
+        return student;
+    }
+
+    @Override
     public Student getStudentById(int id) throws SQLException {
         Connection connection = connectionManager.getConnection();
         PreparedStatement statement = connection.prepareStatement("SELECT * " +

@@ -10,6 +10,8 @@ public interface I_StudentDAO {
 
     public List<Student> getAllStudents() throws SQLException;
 
+    public Student getStudentByLogin(String login) throws SQLException;
+
     public Student getStudentById(int id) throws SQLException;
 
     public boolean updateStudent(Student student) throws SQLException;

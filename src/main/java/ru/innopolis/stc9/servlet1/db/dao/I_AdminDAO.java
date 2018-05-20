@@ -11,6 +11,8 @@ public interface I_AdminDAO {
 
     public List<Admin> getAllAdmins() throws SQLException;
 
+    public Admin getAdminByLogin(String login) throws SQLException;
+
     public Admin getAdminById(int id) throws SQLException;
 
     public boolean updateAdmin(Admin admin) throws SQLException;

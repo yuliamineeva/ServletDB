@@ -49,6 +49,18 @@ public class AdminDAO implements I_AdminDAO {
     }
 
     @Override
+    public Admin getAdminByLogin(String login) throws SQLException {
+        Connection connection = connectionManager.getConnection();
+        PreparedStatement statement = connection.prepareStatement("SELECT * " +
+                "FROM admin WHERE login = ?");
+        statement.setString(1, login);
+        ResultSet resultSet = statement.executeQuery();
+        Admin admin = getAdminFromResultset(resultSet);
+        connection.close();
+        return admin;
+    }
+
+    @Override
     public Admin getAdminById(int id) throws SQLException {
         Connection connection = connectionManager.getConnection();
         PreparedStatement statement = connection.prepareStatement("SELECT * " +
