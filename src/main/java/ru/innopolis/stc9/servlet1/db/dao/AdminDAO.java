@@ -4,10 +4,9 @@ import ru.innopolis.stc9.servlet1.db.connectionManager.ConnectionManagerJDBC;
 import ru.innopolis.stc9.servlet1.db.connectionManager.IConnectionManager;
 import ru.innopolis.stc9.servlet1.pojo.Admin;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AdminDAO implements I_AdminDAO {
     private static IConnectionManager connectionManager = ConnectionManagerJDBC.getInstance();
@@ -17,9 +16,7 @@ public class AdminDAO implements I_AdminDAO {
         Connection connection = connectionManager.getConnection();
         PreparedStatement statement = connection.prepareStatement("INSERT INTO admin (" +
                 "name, login, password) VALUES (?, ?, ?)");
-        statement.setString(1, admin.getName());
-        statement.setString(2, admin.getLogin());
-        statement.setString(3, admin.getPassword());
+        setStatementForAdd(admin, statement);
         int countRow = statement.executeUpdate();
         connection.close();
         if (countRow > 0) {
@@ -27,6 +24,28 @@ public class AdminDAO implements I_AdminDAO {
         } else {
             return false;
         }
+    }
+
+    private void setStatementForAdd(Admin admin, PreparedStatement statement) throws SQLException {
+        statement.setString(1, admin.getName());
+        statement.setString(2, admin.getLogin());
+        statement.setString(3, admin.getPassword());
+    }
+
+
+    @Override
+    public List<Admin> getAllAdmins() throws SQLException {
+        Connection connection = connectionManager.getConnection();
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery("SELECT * " +
+                "FROM admin");
+        ArrayList<Admin> admins = new ArrayList<>();
+        while (resultSet.next()) {
+            Admin admin = getAdminFromResultset(resultSet);
+            admins.add(admin);
+        }
+        connection.close();
+        return admins;
     }
 
     @Override
@@ -36,6 +55,12 @@ public class AdminDAO implements I_AdminDAO {
                 "FROM admin WHERE id = ?");
         statement.setInt(1, id);
         ResultSet resultSet = statement.executeQuery();
+        Admin admin = getAdminFromResultset(resultSet);
+        connection.close();
+        return admin;
+    }
+
+    private Admin getAdminFromResultset(ResultSet resultSet) throws SQLException {
         Admin admin = null;
         if (resultSet.next()) {
             admin = new Admin(
@@ -44,7 +69,6 @@ public class AdminDAO implements I_AdminDAO {
                     resultSet.getString("login"),
                     resultSet.getString("password"));
         }
-        connection.close();
         return admin;
     }
 
@@ -53,10 +77,7 @@ public class AdminDAO implements I_AdminDAO {
         Connection connection = connectionManager.getConnection();
         PreparedStatement statement = connection.prepareStatement("UPDATE admin " +
                 "SET name = ?, login = ?, password = ? WHERE id = ?");
-        statement.setString(1, admin.getName());
-        statement.setString(2, admin.getLogin());
-        statement.setString(3, admin.getPassword());
-        statement.setInt(4, admin.getId());
+        setStatementForUpdate(admin, statement);
         int countRow = statement.executeUpdate();
         connection.close();
         if (countRow > 0) {
@@ -64,6 +85,13 @@ public class AdminDAO implements I_AdminDAO {
         } else {
             return false;
         }
+    }
+
+    private void setStatementForUpdate(Admin admin, PreparedStatement statement) throws SQLException {
+        statement.setString(1, admin.getName());
+        statement.setString(2, admin.getLogin());
+        statement.setString(3, admin.getPassword());
+        statement.setInt(4, admin.getId());
     }
 
     @Override

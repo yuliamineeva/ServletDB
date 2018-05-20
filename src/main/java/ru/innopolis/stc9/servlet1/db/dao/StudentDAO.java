@@ -15,12 +15,8 @@ public class StudentDAO implements I_StudentDAO {
     public boolean addStudent(Student student) throws SQLException {
         Connection connection = connectionManager.getConnection();
         PreparedStatement statement = connection.prepareStatement("INSERT INTO student " +
-                "(id, name, login, password, average_mark) VALUES (?, ?, ?, ?, ?)");
-        statement.setInt(1, student.getId());
-        statement.setString(2, student.getName());
-        statement.setString(3, student.getLogin());
-        statement.setString(4, student.getPassword());
-        statement.setFloat(5, student.getAverageMark());
+                "(name, login, password, average_mark) VALUES (?, ?, ?, ?)");
+        setStatementForAdd(student, statement);
         int countRow = statement.executeUpdate();
         connection.close();
         if (countRow > 0) {
@@ -28,6 +24,13 @@ public class StudentDAO implements I_StudentDAO {
         } else {
             return false;
         }
+    }
+
+    private void setStatementForAdd(Student student, PreparedStatement statement) throws SQLException {
+        statement.setString(1, student.getName());
+        statement.setString(2, student.getLogin());
+        statement.setString(3, student.getPassword());
+        statement.setFloat(4, student.getAverageMark());
     }
 
     @Override
@@ -39,12 +42,7 @@ public class StudentDAO implements I_StudentDAO {
         ArrayList<Student> students = new ArrayList<>();
         Student student = null;
         while (resultSet.next()) {
-            student = new Student(
-                    resultSet.getInt("id"),
-                    resultSet.getString("name"),
-                    resultSet.getString("login"),
-                    resultSet.getString("password"),
-                    resultSet.getFloat("average_mark"));
+            student = getStudentFromResultset(resultSet);
             students.add(student);
         }
         connection.close();
@@ -60,42 +58,28 @@ public class StudentDAO implements I_StudentDAO {
         ResultSet resultSet = statement.executeQuery();
         Student student = null;
         if (resultSet.next()) {
-            student = new Student(
-                    resultSet.getInt("id"),
-                    resultSet.getString("name"),
-                    resultSet.getString("login"),
-                    resultSet.getString("password"),
-                    resultSet.getFloat("average_mark"));
+            student = getStudentFromResultset(resultSet);
         }
         connection.close();
         return student;
     }
 
-//    @Override
-//    public boolean updateStudent(Student student) throws SQLException {
-//        Connection connection = connectionManager.getConnection();
-//        PreparedStatement statement = connection.prepareStatement("UPDATE student " +
-//                "SET name = ?, login = ?, password = ?, average_mark = ? WHERE id = ?");
-//        statement.setString(1, student.getName());
-//        statement.setString(2, student.getLogin());
-//        statement.setString(3, student.getPassword());
-//        statement.setFloat(4, student.getAverageMark());
-//        statement.setInt(5, student.getId());
-//        int countRow = statement.executeUpdate();
-//        connection.close();
-//        if (countRow > 0) {
-//            return true;
-//        } else {
-//            return false;
-//        }
-//    }
+    private Student getStudentFromResultset(ResultSet resultSet) throws SQLException {
+        Student student = new Student(
+                resultSet.getInt("id"),
+                resultSet.getString("name"),
+                resultSet.getString("login"),
+                resultSet.getString("password"),
+                resultSet.getFloat("average_mark"));
+        return student;
+    }
 
     @Override
     public boolean updateStudent(Student student) throws SQLException {
         Connection connection = connectionManager.getConnection();
         PreparedStatement statement = connection.prepareStatement("UPDATE student " +
                 "SET name = ?, login = ?, password = ?, average_mark = ? WHERE id = ?");
-        getStatement(student, statement);
+        setStatementForUpdate(student, statement);
         int countRow = statement.executeUpdate();
         connection.close();
         if (countRow > 0) {
@@ -105,13 +89,12 @@ public class StudentDAO implements I_StudentDAO {
         }
     }
 
-    private void getStatement(Student student, PreparedStatement statement) throws SQLException {
+    private void setStatementForUpdate(Student student, PreparedStatement statement) throws SQLException {
         statement.setString(1, student.getName());
         statement.setString(2, student.getLogin());
         statement.setString(3, student.getPassword());
         statement.setFloat(4, student.getAverageMark());
         statement.setInt(5, student.getId());
-
     }
 
     @Override

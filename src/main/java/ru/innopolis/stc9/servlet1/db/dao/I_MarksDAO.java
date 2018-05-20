@@ -13,13 +13,15 @@ public interface I_MarksDAO {
 
     public Marks getMarksById(int id) throws SQLException;
 
+    public ArrayList<Marks> getAllMarks() throws SQLException;
+
     public ArrayList<Marks> getMarksByLesson(Lesson lesson) throws SQLException;
 
     public ArrayList<Marks> getMarksByStudent(Student student) throws SQLException;
 
-    public float calculateAverageMark(Student student) throws SQLException;
-
     public ArrayList<Marks> getMarksByDate(Date date) throws SQLException;
+
+    public float calculateAverageMark(Student student) throws SQLException;
 
     public boolean updateMarks(Marks marks) throws SQLException;
 

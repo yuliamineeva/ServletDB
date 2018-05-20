@@ -13,6 +13,8 @@ public interface I_AttendanceDAO {
 
     public Attendance getAttendanceById(int id) throws SQLException;
 
+    public ArrayList<Attendance> getAllAttendance() throws SQLException;
+
     public ArrayList<Attendance> getAttendanceByLesson(Lesson lesson) throws SQLException;
 
     public ArrayList<Attendance> getAttendanceByStudent(Student student) throws SQLException;

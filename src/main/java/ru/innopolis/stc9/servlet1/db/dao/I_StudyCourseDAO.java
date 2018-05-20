@@ -11,6 +11,8 @@ public interface I_StudyCourseDAO {
 
     public StudyCourse getStudyCourseById(int id) throws SQLException;
 
+    public ArrayList<StudyCourse> getAllStudyCourse() throws SQLException;
+
     public ArrayList<StudyCourse> getStudyCourseByLecturer(Lecturer lecturer) throws SQLException;
 
     public boolean updateStudyCourse(StudyCourse studyCourse) throws SQLException;

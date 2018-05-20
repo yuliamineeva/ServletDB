@@ -11,6 +11,8 @@ public interface I_LessonDAO {
 
     public Lesson getLessonById(int id) throws SQLException;
 
+    public ArrayList<Lesson> getAllLessons() throws SQLException;
+
     public ArrayList<Lesson> getLessonsByStudyCourse(StudyCourse studyCourse) throws SQLException;
 
     public boolean updateLesson(Lesson lesson) throws SQLException;

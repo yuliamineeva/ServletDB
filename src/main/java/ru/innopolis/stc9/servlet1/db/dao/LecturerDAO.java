@@ -4,10 +4,9 @@ import ru.innopolis.stc9.servlet1.db.connectionManager.ConnectionManagerJDBC;
 import ru.innopolis.stc9.servlet1.db.connectionManager.IConnectionManager;
 import ru.innopolis.stc9.servlet1.pojo.Lecturer;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LecturerDAO implements I_LecturerDAO {
     private static IConnectionManager connectionManager = ConnectionManagerJDBC.getInstance();
@@ -16,11 +15,8 @@ public class LecturerDAO implements I_LecturerDAO {
     public boolean addLecturer(Lecturer lecturer) throws SQLException {
         Connection connection = connectionManager.getConnection();
         PreparedStatement statement = connection.prepareStatement("INSERT INTO lecturer " +
-                "(id, name, login, password) VALUES (?, ?, ?, ?)");
-        statement.setInt(1, lecturer.getId());
-        statement.setString(2, lecturer.getName());
-        statement.setString(3, lecturer.getLogin());
-        statement.setString(4, lecturer.getPassword());
+                "(name, login, password) VALUES (?, ?, ?)");
+        setStatementForAdd(lecturer, statement);
         int countRow = statement.executeUpdate();
         connection.close();
         if (countRow > 0) {
@@ -28,6 +24,28 @@ public class LecturerDAO implements I_LecturerDAO {
         } else {
             return false;
         }
+    }
+
+    private void setStatementForAdd(Lecturer lecturer, PreparedStatement statement) throws SQLException {
+        statement.setString(1, lecturer.getName());
+        statement.setString(2, lecturer.getLogin());
+        statement.setString(3, lecturer.getPassword());
+    }
+
+    @Override
+    public List<Lecturer> getAllLecturers() throws SQLException {
+        Connection connection = connectionManager.getConnection();
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery("SELECT * " +
+                "FROM lecturer");
+        ArrayList<Lecturer> lecturers = new ArrayList<>();
+        Lecturer lecturer = null;
+        while (resultSet.next()) {
+            lecturer = getlecturerFromResultset(resultSet);
+            lecturers.add(lecturer);
+        }
+        connection.close();
+        return lecturers;
     }
 
     @Override
@@ -37,6 +55,12 @@ public class LecturerDAO implements I_LecturerDAO {
                 "FROM lecturer WHERE id = ?");
         statement.setInt(1, id);
         ResultSet resultSet = statement.executeQuery();
+        Lecturer lecturer = getlecturerFromResultset(resultSet);
+        connection.close();
+        return lecturer;
+    }
+
+    private Lecturer getlecturerFromResultset(ResultSet resultSet) throws SQLException {
         Lecturer lecturer = null;
         if (resultSet.next()) {
             lecturer = new Lecturer(
@@ -45,7 +69,6 @@ public class LecturerDAO implements I_LecturerDAO {
                     resultSet.getString("login"),
                     resultSet.getString("password"));
         }
-        connection.close();
         return lecturer;
     }
 
@@ -54,10 +77,7 @@ public class LecturerDAO implements I_LecturerDAO {
         Connection connection = connectionManager.getConnection();
         PreparedStatement statement = connection.prepareStatement("UPDATE lecturer " +
                 "SET name = ?, login = ?, password = ? WHERE id = ?");
-        statement.setString(1, lecturer.getName());
-        statement.setString(2, lecturer.getLogin());
-        statement.setString(3, lecturer.getPassword());
-        statement.setInt(4, lecturer.getId());
+        setStatementForUpdate(lecturer, statement);
         int countRow = statement.executeUpdate();
         connection.close();
         if (countRow > 0) {
@@ -65,6 +85,13 @@ public class LecturerDAO implements I_LecturerDAO {
         } else {
             return false;
         }
+    }
+
+    private void setStatementForUpdate(Lecturer lecturer, PreparedStatement statement) throws SQLException {
+        statement.setString(1, lecturer.getName());
+        statement.setString(2, lecturer.getLogin());
+        statement.setString(3, lecturer.getPassword());
+        statement.setInt(4, lecturer.getId());
     }
 
     @Override
