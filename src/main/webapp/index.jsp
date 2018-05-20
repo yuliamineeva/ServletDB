@@ -12,7 +12,7 @@
     <link href="../resources/style.css" rel="stylesheet">
 </head>
 
-<main class="content" align="center" style=" padding-top: 30px;">
+<main class="content" align="center" style=" padding-top: 30px; padding-left: 0px;">
     <H2><strong>Добро пожаловать в систему "База данных успеваемости студентов".</strong></H2> <BR>
     <BR>
     <H2><a href="/login">Войти</a></H2>

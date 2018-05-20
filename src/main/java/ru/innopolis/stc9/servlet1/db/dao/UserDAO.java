@@ -16,7 +16,7 @@ public class UserDAO implements I_UserDAO {
     @Override
     public boolean addUser(User user) throws SQLException {
         Connection connection = connectionManager.getConnection();
-        PreparedStatement statement = connection.prepareStatement("INSERT INTO user " +
+        PreparedStatement statement = connection.prepareStatement("INSERT INTO users " +
                 "(login, role) VALUES (?, ?)");
         setStatementForAdd(user, statement);
         int countRow = statement.executeUpdate();
@@ -38,7 +38,7 @@ public class UserDAO implements I_UserDAO {
     public User getUserById(int id) throws SQLException {
         Connection connection = connectionManager.getConnection();
         PreparedStatement statement = connection.prepareStatement("SELECT * " +
-                "FROM user INNER JOIN roles AS r(r_id, r_role_name, r_role) " +
+                "FROM users INNER JOIN roles AS r(r_id, r_role_name, r_role) " +
                 "ON user.role = r.r_role WHERE user.id = ?");
         statement.setInt(1, id);
         ResultSet resultSet = statement.executeQuery();
@@ -66,8 +66,8 @@ public class UserDAO implements I_UserDAO {
     public User getUserByLogin(String login) throws SQLException {
         Connection connection = connectionManager.getConnection();
         PreparedStatement statement = connection.prepareStatement("SELECT * " +
-                "FROM user INNER JOIN roles AS r(r_id, r_role_name, r_role) " +
-                "ON user.role = r.r_role WHERE user.login = ?");
+                "FROM users INNER JOIN roles AS r(r_id, r_role_name, r_role) " +
+                "ON users.role = r.r_role WHERE users.login = ?");
         statement.setString(1, login);
         ResultSet resultSet = statement.executeQuery();
         User user = getUserFromResultset(resultSet);
@@ -79,8 +79,8 @@ public class UserDAO implements I_UserDAO {
     public List<User> getAllUsersByRole(String role_name) throws SQLException {
         Connection connection = connectionManager.getConnection();
         PreparedStatement statement = connection.prepareStatement("SELECT * " +
-                "FROM user INNER JOIN roles AS r(r_id, r_role_name, r_role) " +
-                "ON user.role = r.r_role WHERE r_role = ?");
+                "FROM users INNER JOIN roles AS r(r_id, r_role_name, r_role) " +
+                "ON users.role = r.r_role WHERE r_role = ?");
         statement.setString(1, role_name);
         ResultSet resultSet = statement.executeQuery();
         List<User> users = getUserlistFromResultset(resultSet);
@@ -93,7 +93,7 @@ public class UserDAO implements I_UserDAO {
         Connection connection = connectionManager.getConnection();
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT * " +
-                "FROM user");
+                "FROM users");
         List<User> users = getUserlistFromResultset(resultSet);
         connection.close();
         return users;
@@ -102,7 +102,7 @@ public class UserDAO implements I_UserDAO {
     private List<User> getUserlistFromResultset(ResultSet resultSet) throws SQLException {
         List<User> users = new ArrayList<>();
         User user = null;
-        if (resultSet.next()) {
+        while (resultSet.next()) {
             user = new User(
                     resultSet.getInt("id"),
                     resultSet.getString("login"),
@@ -115,7 +115,7 @@ public class UserDAO implements I_UserDAO {
     @Override
     public boolean updateUser(User user) throws SQLException {
         Connection connection = connectionManager.getConnection();
-        PreparedStatement statement = connection.prepareStatement("UPDATE user " +
+        PreparedStatement statement = connection.prepareStatement("UPDATE users " +
                 "SET login = ?, role = ? WHERE id = ?");
         setStatementForUpdate(user, statement);
         int countRow = statement.executeUpdate();
@@ -136,7 +136,7 @@ public class UserDAO implements I_UserDAO {
     @Override
     public boolean deleteUserById(int id) throws SQLException {
         Connection connection = connectionManager.getConnection();
-        PreparedStatement statement = connection.prepareStatement("DELETE FROM user " +
+        PreparedStatement statement = connection.prepareStatement("DELETE FROM users " +
                 "WHERE id = ?");
         statement.setInt(1, id);
         int countRow = statement.executeUpdate();

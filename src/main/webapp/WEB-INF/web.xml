@@ -33,30 +33,12 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>DashboardController</servlet-name>
-        <servlet-class>ru.innopolis.stc9.servlet1.controller.DashboardController</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>DashboardController</servlet-name>
-        <url-pattern>/user/dashboard</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>InnerDashboardController</servlet-name>
+        <servlet-name>UniversalDashboardController</servlet-name>
         <servlet-class>ru.innopolis.stc9.servlet1.controller.UniversalDashboardController</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>InnerDashboardController</servlet-name>
-        <url-pattern>/inner/dashboard</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>AdminDashboardController</servlet-name>
-        <servlet-class>ru.innopolis.stc9.servlet1.controller.AdminDashboardController</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>AdminDashboardController</servlet-name>
-        <url-pattern>/admin/dashboard</url-pattern>
+        <servlet-name>UniversalDashboardController</servlet-name>
+        <url-pattern>/user/dashboard</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>
@@ -72,20 +54,5 @@
         <filter-name>user-filter</filter-name>
         <url-pattern>/user/*</url-pattern>
     </filter-mapping>
-    <filter>
-        <filter-name>admin-filter</filter-name>
-        <filter-class>ru.innopolis.stc9.servlet1.controller.filter.AdminFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>admin-filter</filter-name>
-        <url-pattern>/admin/*</url-pattern>
-    </filter-mapping>
-    <filter>
-        <filter-name>inner-filter</filter-name>
-        <filter-class>ru.innopolis.stc9.servlet1.controller.filter.InnerFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>inner-filter</filter-name>
-        <url-pattern>/inner/*</url-pattern>
-    </filter-mapping>
+
 </web-app>

@@ -11,7 +11,6 @@
     <link href="../resources/style.css" rel="stylesheet">
 </head>
 <body align="center" style=" padding-top: 30px;">
-<%--// todo проверить следующую строку--%>
 <%=request.getAttribute("message") + "<br><br>"%>
 <%
     Long currentTime = System.currentTimeMillis();
@@ -23,10 +22,10 @@
 <form action="${pageContext.request.contextPath}/login" method="post">
     <%--<div align="center">--%>
     <label>Введите логин </label>
-    <input type="text" value="user" name="userName"
+    <input type="text" name="userName"
            style="width: 204px; height: 36px; font-size: 16px;"><BR>
     <label>Введите пароль </label>
-    <input type="password" maxlength="25" size="40" name="password"
+    <input type="password" maxlength="25" size="40" name="userPassword"
            style="width: 204px; height: 36px; font-size: 16px;"><BR>
     <%--</div>--%>
     <input type="submit" value="OK"
