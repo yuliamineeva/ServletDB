@@ -12,6 +12,11 @@ public class StudyCourse {
         this.lecturer_id = lecturer_id;
     }
 
+    public StudyCourse(String name, int lecturer_id) {
+        this.name = name;
+        this.lecturer_id = lecturer_id;
+    }
+
     public StudyCourse(int id, String name, int lecturer_id, Lecturer lecturer) {
         this.id = id;
         this.name = name;

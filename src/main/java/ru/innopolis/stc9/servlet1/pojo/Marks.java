@@ -22,6 +22,14 @@ public class Marks {
         this.mark = mark;
     }
 
+    public Marks(Date date, int studycourse_id, int lesson_id, int student_id, Mark mark) {
+        this.date = date;
+        this.studycourse_id = studycourse_id;
+        this.lesson_id = lesson_id;
+        this.student_id = student_id;
+        this.mark = mark;
+    }
+
     public Marks(int id, Date date, int studycourse_id, StudyCourse studyCourse,
                  int lesson_id, Lesson lesson, int student_id,
                  Student student, Mark mark) {
