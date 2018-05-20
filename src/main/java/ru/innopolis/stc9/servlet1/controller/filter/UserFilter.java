@@ -16,7 +16,7 @@ public class UserFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpSession httpSession = ((HttpServletRequest) request).getSession();
         if ((httpSession.getAttribute("login") != null) &&
-                (((String) httpSession.getAttribute("role") == "1"))) {
+                (((int) httpSession.getAttribute("role") == 2))) { //todo проверить
             chain.doFilter(request, response);
         } else {
             HttpServletResponse httpServletRespoonse = (HttpServletResponse) response;

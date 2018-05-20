@@ -16,7 +16,7 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
-        if ("logout".equals("logout")) {
+        if ("logout".equals("logout")) { //todo проверить
             req.getSession().invalidate();
         }
         logger.info("Received request for login page");
@@ -36,12 +36,12 @@ public class LoginController extends HttpServlet {
             int role = userService.getRole(login);
             req.getSession().setAttribute("login", login);
             req.getSession().setAttribute("role", role);
-/*            if (role==1) {
+            if (role == 1) {
                 resp.sendRedirect(req.getContextPath() + "/admin/dashboard");
-            } else{
+            } else {
                 resp.sendRedirect(req.getContextPath() + "/user/dashboard");
-            }*/
-            resp.sendRedirect(req.getContextPath() + "/inner/dashboard");
+            }
+//            resp.sendRedirect(req.getContextPath() + "/inner/dashboard");
         } else {
             resp.sendRedirect(req.getContextPath() + "/login?errorMsg=authErr");
         }

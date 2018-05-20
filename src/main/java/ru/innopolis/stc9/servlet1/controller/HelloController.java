@@ -2,6 +2,7 @@ package ru.innopolis.stc9.servlet1.controller;
 
 import org.apache.log4j.Logger;
 import ru.innopolis.stc9.servlet1.pojo.Student;
+import ru.innopolis.stc9.servlet1.pojo.User;
 import ru.innopolis.stc9.servlet1.service.AdminService;
 import ru.innopolis.stc9.servlet1.service.EducationalService;
 import ru.innopolis.stc9.servlet1.service.StudentService;
@@ -33,10 +34,16 @@ public class HelloController extends HttpServlet {
         resp.getWriter().println("База данных успеваемости студентов\n" + "Database of student performance");
         String table = req.getParameter("table");
         if (table.equals("student")) {
-            List<Student> students = educationalService.getAllStudents(table);
+            List<Student> students = educationalService.getAllStudents();
             for (Student student : students) {
                 resp.getWriter().println(student.getId() + " " + student.getName());
                 logger.info(student.getId() + " " + student.getName());
+            }
+        } else if (table.equals("user")) {
+            List<User> users = educationalService.getAllUsers();
+            for (User user : users) {
+                resp.getWriter().println(user.getId() + " " + user.getLogin() + " " + user.getRole_number());
+                logger.info(user.getId() + " " + user.getLogin() + " " + user.getRole_number());
             }
         } else {
             resp.getWriter().println("The table is not found");

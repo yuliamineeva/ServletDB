@@ -26,7 +26,7 @@
     <input type="text" value="user" name="userName"
            style="width: 204px; height: 36px; font-size: 16px;"><BR>
     <label>Введите пароль </label>
-    <input type="password" maxlength="25" size="40" name="password"
+    <input type="password" maxlength="25" size="40" name="userPassword"
            style="width: 204px; height: 36px; font-size: 16px;"><BR>
     <%--</div>--%>
     <input type="submit" value="OK"
