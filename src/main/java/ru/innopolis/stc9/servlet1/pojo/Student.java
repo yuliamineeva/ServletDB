@@ -69,12 +69,9 @@ public class Student {
 
     @Override
     public String toString() {
-        return "Student{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", login='" + login + '\'' +
-                ", password='" + password + '\'' +
-                ", averageMark=" + averageMark +
-                '}';
+        return "user= " + ROLE + ",\n" +
+                "name= " + name + ", \n" +
+                "login= " + login + ", \n" +
+                "averageMark= " + averageMark;
     }
 }

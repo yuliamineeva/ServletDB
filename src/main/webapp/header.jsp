@@ -17,7 +17,7 @@
 <div class="wrapper">
     <header class="header" align="center">
         <H1> База данных успеваемости студентов</H1>
-        <H1> "Database of student performance</H1>
+        <H1> Database of student performance</H1>
         <div class="logout" align="right">
             <c:out value="Ваш логин: "/>
             <c:out value="${sessionScope.login}"/>

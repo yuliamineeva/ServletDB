@@ -6,12 +6,12 @@
     <display-name>MyFirstServlet</display-name>
 
     <servlet>
-        <servlet-name>hello</servlet-name>
-        <servlet-class>ru.innopolis.stc9.servlet1.controller.HelloController</servlet-class>
+        <servlet-name>list</servlet-name>
+        <servlet-class>ru.innopolis.stc9.servlet1.controller.ListController</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>hello</servlet-name>
-        <url-pattern>/hello</url-pattern>
+        <servlet-name>list</servlet-name>
+        <url-pattern>/list</url-pattern>
     </servlet-mapping>
 
     <servlet>

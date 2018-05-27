@@ -22,10 +22,10 @@
 <form action="${pageContext.request.contextPath}/login" method="post">
     <%--<div align="center">--%>
     <label>Введите логин </label>
-    <input type="text" name="userName"
+    <input type="text" name="userName" value="2"
            style="width: 204px; height: 36px; font-size: 16px;"><BR>
     <label>Введите пароль </label>
-    <input type="password" maxlength="25" size="40" name="userPassword"
+    <input type="password" maxlength="25" size="40" name="userPassword" value="2"
            style="width: 204px; height: 36px; font-size: 16px;"><BR>
     <%--</div>--%>
     <input type="submit" value="OK"

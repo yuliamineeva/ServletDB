@@ -14,6 +14,16 @@ public class UserService {
     private I_LecturerDAO lecturerDAO = new LecturerDAO();
     private I_StudentDAO studentDAO = new StudentDAO();
 
+    public User getUserByLogin(String login) {
+        User user = null;
+        try {
+            user = userDao.getUserByLogin(login);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+
     public boolean checkAuth(String login, String password) {
         User user = null;
         String passwordFromBD = null;
@@ -47,6 +57,44 @@ public class UserService {
             }
         }
         return passwordFromBD;
+    }
+
+    public String getUsersFieldFromDB(String login) {
+        String userInfo = null;
+        User user = getUserByLogin(login);
+        if (user != null) {
+            int role = user.getRole_number();
+            switch (role) {
+                case 1:
+                    Admin admin = null;
+                    try {
+                        admin = adminDAO.getAdminByLogin(login);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                    userInfo = admin.toString();
+                    break;
+                case 2:
+                    Lecturer lecturer = null;
+                    try {
+                        lecturer = lecturerDAO.getLecturerByLogin(login);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                    userInfo = lecturer.toString();
+                    break;
+                case 3:
+                    Student student = null;
+                    try {
+                        student = studentDAO.getStudentByLogin(login);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                    userInfo = student.toString();
+                    break;
+            }
+        }
+        return userInfo;
     }
 
     public int getRole(String login) {

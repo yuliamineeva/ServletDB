@@ -58,11 +58,8 @@ public class Lecturer {
 
     @Override
     public String toString() {
-        return "Lecturer{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", login='" + login + '\'' +
-                ", password='" + password + '\'' +
-                '}';
+        return "user= " + ROLE + ",\n" +
+                "name= " + name + ",\n" +
+                "login= " + login;
     }
 }

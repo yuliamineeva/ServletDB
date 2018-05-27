@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class LoginController extends HttpServlet {
-    private static Logger logger = Logger.getLogger(HelloController.class);
+    private static Logger logger = Logger.getLogger(LoginController.class);
     private UserService userService = new UserService();
 
     @Override
@@ -34,6 +34,8 @@ public class LoginController extends HttpServlet {
         String password = req.getParameter("userPassword");
         if (userService.checkAuth(login, password)) {
             int role = userService.getRole(login);
+            String userInfo = userService.getUsersFieldFromDB(login);
+            req.getSession().setAttribute("userInfo", userInfo);
             req.getSession().setAttribute("login", login);
             req.getSession().setAttribute("role", role);
             logger.info("Login " + login + " , role = " + role);

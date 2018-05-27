@@ -64,11 +64,8 @@ public class Admin {
 
     @Override
     public String toString() {
-        return "Admin{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", login='" + login + '\'' +
-                ", password='" + password + '\'' +
-                '}';
+        return "user= " + ROLE + ", \n" +
+                "name= " + name + ", \n" +
+                "login=" + login;
     }
 }

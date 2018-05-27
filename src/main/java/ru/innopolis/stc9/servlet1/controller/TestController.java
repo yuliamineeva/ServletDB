@@ -15,8 +15,8 @@ import java.io.IOException;
 import java.util.List;
 
 
-public class HelloController extends HttpServlet {
-    private final static Logger logger = Logger.getLogger(HelloController.class);
+public class TestController extends HttpServlet {
+    private final static Logger logger = Logger.getLogger(TestController.class);
     private EducationalService educationalService = new EducationalService();
     private AdminService adminService = new AdminService();
     private StudentService studentService = new StudentService();
@@ -30,6 +30,8 @@ public class HelloController extends HttpServlet {
         if ("sTest".equals(action)) {
             studentService.updateStudentTest();
         }
+        req.setCharacterEncoding("UTF-8");
+//        resp.setCharacterEncoding("UTF-8");
         resp.setCharacterEncoding("Cp1251"); // Для отображение русских букв в браузере. Кодировка "UTF-8" не подошла
         resp.getWriter().println("База данных успеваемости студентов\n" + "Database of student performance");
         String table = req.getParameter("table");

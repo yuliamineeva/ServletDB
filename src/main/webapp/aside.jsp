@@ -5,11 +5,23 @@
     <p><b>МЕНЮ:</b></p>
     <BR>
     <ul>
-        <li><a href="${pageContext.request.contextPath}/ToDo1">Меню1</a></li>
+        <li><a href="${pageContext.request.contextPath}/Курсы">Курсы</a></li>
         <BR>
-        <li><a href="${pageContext.request.contextPath}/ToDo2">Меню2</a></li>
+        <li><a href="${pageContext.request.contextPath}/Расписание">Расписание</a></li>
         <BR>
-        <li><a href="${pageContext.request.contextPath}/ToDo3">Меню3</a></li>
+        <li><a href="${pageContext.request.contextPath}/Посещаемость">Посещаемость</a></li>
         <BR>
+        <li><a href="${pageContext.request.contextPath}/Оценки">Оценки</a></li>
+        <BR>
+        <%if ((Integer) request.getSession().getAttribute("role") == 1) {%>
+        <li><a href="${pageContext.request.contextPath}/Пользователи">Пользователи</a></li>
+        <BR>
+        <%} else if ((Integer) request.getSession().getAttribute("role") == 2) { %>
+        <li><a href="${pageContext.request.contextPath}/list?listType=students">Студенты</a></li>
+        <BR>
+        <%} else { %>
+        <li><a href="${pageContext.request.contextPath}/Преподаватели">Преподаватели</a></li>
+        <BR>
+        <% } %>
     </ul>
 </div>
