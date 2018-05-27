@@ -39,7 +39,7 @@ public class UserDAO implements I_UserDAO {
         Connection connection = connectionManager.getConnection();
         PreparedStatement statement = connection.prepareStatement("SELECT * " +
                 "FROM users INNER JOIN roles AS r(r_id, r_role_name, r_role) " +
-                "ON user.role = r.r_role WHERE user.id = ?");
+                "ON users.role = r.r_role WHERE users.id = ?");
         statement.setInt(1, id);
         ResultSet resultSet = statement.executeQuery();
         User user = getUserFromResultset(resultSet);
@@ -80,7 +80,7 @@ public class UserDAO implements I_UserDAO {
         Connection connection = connectionManager.getConnection();
         PreparedStatement statement = connection.prepareStatement("SELECT * " +
                 "FROM users INNER JOIN roles AS r(r_id, r_role_name, r_role) " +
-                "ON users.role = r.r_role WHERE r_role = ?");
+                "ON users.role = r.r_role WHERE r_role_name = ?");
         statement.setString(1, role_name);
         ResultSet resultSet = statement.executeQuery();
         List<User> users = getUserlistFromResultset(resultSet);

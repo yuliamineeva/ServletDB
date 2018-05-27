@@ -1,7 +1,9 @@
 package ru.innopolis.stc9.servlet1.controller;
 
 import org.apache.log4j.Logger;
+import ru.innopolis.stc9.servlet1.pojo.Lecturer;
 import ru.innopolis.stc9.servlet1.pojo.Student;
+import ru.innopolis.stc9.servlet1.pojo.User;
 import ru.innopolis.stc9.servlet1.service.EducationalService;
 
 import javax.servlet.ServletException;
@@ -28,12 +30,28 @@ public class ListController extends HttpServlet {
                     (Integer) req.getSession().getAttribute("role") != 3) {
                 req.getRequestDispatcher("/students.jsp").forward(req, resp);
             } else {
-
                 req.getRequestDispatcher("/wrongRole.jsp").forward(req, resp);
             }
         }
-
-//            List<User> users = educationalService.getAllUsers();
+        if ("users".equals(listType)) {
+            List<User> users = educationalService.getAllUsers();
+            req.setAttribute("users", users);
+            if (req.getSession().getAttribute("role") != null &&
+                    (Integer) req.getSession().getAttribute("role") == 1) {
+                req.getRequestDispatcher("/users.jsp").forward(req, resp);
+            } else {
+                req.getRequestDispatcher("/wrongRole.jsp").forward(req, resp);
+            }
+        }
+        if ("lecturers".equals(listType)) {
+            List<Lecturer> lecturers = educationalService.getAllLecturers();
+            req.setAttribute("lecturers", lecturers);
+            if (req.getSession().getAttribute("role") != null) {
+                req.getRequestDispatcher("/lecturers.jsp").forward(req, resp);
+            } else {
+                req.getRequestDispatcher("/wrongRole.jsp").forward(req, resp);
+            }
+        }
 
     }
 }

@@ -39,12 +39,22 @@ public class AdminDAO implements I_AdminDAO {
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT * " +
                 "FROM admin");
-        ArrayList<Admin> admins = new ArrayList<>();
+        List<Admin> admins = getAdminlistFromResultset(resultSet);
+        connection.close();
+        return admins;
+    }
+
+    private List<Admin> getAdminlistFromResultset(ResultSet resultSet) throws SQLException {
+        List<Admin> admins = new ArrayList<>();
+        Admin admin = null;
         while (resultSet.next()) {
-            Admin admin = getAdminFromResultset(resultSet);
+            admin = new Admin(
+                    resultSet.getInt("id"),
+                    resultSet.getString("name"),
+                    resultSet.getString("login"),
+                    resultSet.getString("password"));
             admins.add(admin);
         }
-        connection.close();
         return admins;
     }
 

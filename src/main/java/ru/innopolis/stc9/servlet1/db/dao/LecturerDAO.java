@@ -38,13 +38,22 @@ public class LecturerDAO implements I_LecturerDAO {
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT * " +
                 "FROM lecturer");
-        ArrayList<Lecturer> lecturers = new ArrayList<>();
+        List<Lecturer> lecturers = getLecturerlistFromResultset(resultSet);
+        connection.close();
+        return lecturers;
+    }
+
+    private List<Lecturer> getLecturerlistFromResultset(ResultSet resultSet) throws SQLException {
+        List<Lecturer> lecturers = new ArrayList<>();
         Lecturer lecturer = null;
         while (resultSet.next()) {
-            lecturer = getlecturerFromResultset(resultSet);
+            lecturer = new Lecturer(
+                    resultSet.getInt("id"),
+                    resultSet.getString("name"),
+                    resultSet.getString("login"),
+                    resultSet.getString("password"));
             lecturers.add(lecturer);
         }
-        connection.close();
         return lecturers;
     }
 

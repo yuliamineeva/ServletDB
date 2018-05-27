@@ -64,8 +64,8 @@ public class Admin {
 
     @Override
     public String toString() {
-        return "user= " + ROLE + ", \n" +
-                "name= " + name + ", \n" +
+        return "user= " + ROLE + ", " +
+                "name= " + name + ", " +
                 "login=" + login;
     }
 }
