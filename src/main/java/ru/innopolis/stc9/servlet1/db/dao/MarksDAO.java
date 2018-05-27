@@ -165,36 +165,6 @@ public class MarksDAO implements I_MarksDAO {
         return averageMark;
     }
 
-//    @Override
-//    public float calculateAverageMark(Student student) throws SQLException {
-//        Connection connection = connectionManager.getConnection();
-//        PreparedStatement statement = connection.prepareStatement("SELECT * " +
-//                "FROM marks WHERE student_id= ?");
-//        statement.setInt(1, student.getId());
-//        ResultSet resultSet = statement.executeQuery();
-//        ArrayList<Marks> marksArrayList = new ArrayList<>();
-//        Marks marks = null;
-//        int countOfMarks = 0;
-//        int summOfMarks = 0;
-//        while (resultSet.next()) {
-//            marks = new Marks(
-//                    resultSet.getInt("id"),
-//                    resultSet.getDate("date"),
-//                    resultSet.getInt("studycourse_id"),
-//                    resultSet.getInt("lessons_id"),
-//                    resultSet.getInt("student_id"),
-//                    resultSet.getInt("mark"));
-//            marksArrayList.add(marks);
-//            if (marks.getMark() != null) {
-//                countOfMarks++;
-//                summOfMarks += marks.getMark().getIntValue();
-//            }
-//        }
-//        connection.close();
-//        float averageMark = (float) summOfMarks / countOfMarks;
-//        return averageMark;
-//    }
-
     @Override
     public boolean updateMarks(Marks marks) throws SQLException {
         Connection connection = connectionManager.getConnection();

@@ -60,13 +60,21 @@ public class RoleDAO implements I_RoleDAO {
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT * " +
                 "FROM roles");
+        List<Role> rolesArrayList = getRolelistFromResultset(resultSet);
+        connection.close();
+        return rolesArrayList;
+    }
+
+    private List<Role> getRolelistFromResultset(ResultSet resultSet) throws SQLException {
         List<Role> rolesArrayList = new ArrayList<>();
         Role role = null;
         while (resultSet.next()) {
-            role = getRoleFromResultset(resultSet);
+            role = new Role(
+                    resultSet.getInt("id"),
+                    resultSet.getString("role_name"),
+                    resultSet.getInt("role"));
             rolesArrayList.add(role);
         }
-        connection.close();
         return rolesArrayList;
     }
 

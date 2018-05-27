@@ -2,9 +2,11 @@ package ru.innopolis.stc9.servlet1;
 
 import ru.innopolis.stc9.servlet1.db.dao.*;
 import ru.innopolis.stc9.servlet1.pojo.Admin;
+import ru.innopolis.stc9.servlet1.pojo.Role;
 import ru.innopolis.stc9.servlet1.service.EducationalService;
 import ru.innopolis.stc9.servlet1.service.UserService;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public class Main {
@@ -13,6 +15,7 @@ public class Main {
         I_UserDAO userDAO = new UserDAO();
         I_LecturerDAO lecturerDAO = new LecturerDAO();
         I_AdminDAO adminDAO = new AdminDAO();
+        I_RoleDAO roleDAO = new RoleDAO();
         UserService userService = new UserService();
         EducationalService educationalService = new EducationalService();
 
@@ -101,6 +104,19 @@ public class Main {
             System.out.println(admin.toString());
         }
 
+        try {
+            Role role1 = roleDAO.getRoleById(1);
+            System.out.println(role1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        System.out.println("----------");
+
+        List<Role> roles = educationalService.getAllRoles();
+        for (Role role : roles) {
+            System.out.println(role.toString());
+
+        }
 
     }
 }

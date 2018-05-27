@@ -13,7 +13,6 @@ import java.util.List;
 public class MarksController extends HttpServlet {
     private MarksService marksService = new MarksService();
     //todo добавить методы: вывод оценок по дате, по студенту
-    //todo добавить вывод всех таблиц
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

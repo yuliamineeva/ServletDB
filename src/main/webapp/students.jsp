@@ -13,6 +13,9 @@
                 <tr>
                     <th align="center">ID студента</th>
                     <th align="center">ФИО</th>
+                    <%if ((Integer) request.getSession().getAttribute("role") == 1) {%>
+                    <th align="center">login</th>
+                    <% } %>
                     <th align="center">Средняя оценка</th>
                 </tr>
                 <c:if test="${students != null}">
@@ -20,6 +23,9 @@
                         <tr>
                             <td align="center">${student.getId()}</td>
                             <td align="left">${student.getName()}</td>
+                            <%if ((Integer) request.getSession().getAttribute("role") == 1) {%>
+                            <td align="center">${student.getLogin()}</td>
+                            <% } %>
                             <td align="center">${student.getAverageMark()}</td>
                         </tr>
                     </c:forEach>
