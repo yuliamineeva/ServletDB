@@ -1,11 +1,14 @@
 package ru.innopolis.stc9.servlet1.service;
 
+import org.apache.log4j.Logger;
+import ru.innopolis.stc9.servlet1.db.connectionManager.CryptoUtils;
 import ru.innopolis.stc9.servlet1.db.dao.*;
 import ru.innopolis.stc9.servlet1.pojo.Admin;
 import ru.innopolis.stc9.servlet1.pojo.Lecturer;
 import ru.innopolis.stc9.servlet1.pojo.Student;
 import ru.innopolis.stc9.servlet1.pojo.User;
 
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 
 public class UserService {
@@ -13,6 +16,7 @@ public class UserService {
     private I_AdminDAO adminDAO = new AdminDAO();
     private I_LecturerDAO lecturerDAO = new LecturerDAO();
     private I_StudentDAO studentDAO = new StudentDAO();
+    private final static Logger logger = Logger.getLogger(AdminDAO.class);
 
     public User getUserByLogin(String login) {
         User user = null;
@@ -27,13 +31,17 @@ public class UserService {
     public boolean checkAuth(String login, String password) {
         User user = null;
         String passwordFromBD = null;
+        String hashPassword = null;
         try {
             user = userDao.getUserByLogin(login);
             passwordFromBD = getPasswordFromDB(user);
+            hashPassword = CryptoUtils.byteArrayToHexString(CryptoUtils.computeHash(password));
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error trying get User from DB", e);
+        } catch (NoSuchAlgorithmException e) {
+            logger.error("Error trying to crypto password", e);
         }
-        return (user != null) && (passwordFromBD.equals(password));
+        return (user != null) && (passwordFromBD.equals(hashPassword));
     }
 
     private String getPasswordFromDB(User user) throws SQLException {

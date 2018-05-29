@@ -1,15 +1,19 @@
 package ru.innopolis.stc9.servlet1.db.dao;
 
+import org.apache.log4j.Logger;
 import ru.innopolis.stc9.servlet1.db.connectionManager.ConnectionManagerJDBC;
+import ru.innopolis.stc9.servlet1.db.connectionManager.CryptoUtils;
 import ru.innopolis.stc9.servlet1.db.connectionManager.IConnectionManager;
 import ru.innopolis.stc9.servlet1.pojo.Lecturer;
 
+import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class LecturerDAO implements I_LecturerDAO {
     private static IConnectionManager connectionManager = ConnectionManagerJDBC.getInstance();
+    private final static Logger logger = Logger.getLogger(LecturerDAO.class);
 
     @Override
     public boolean addLecturer(Lecturer lecturer) throws SQLException {
@@ -29,7 +33,11 @@ public class LecturerDAO implements I_LecturerDAO {
     private void setStatementForAdd(Lecturer lecturer, PreparedStatement statement) throws SQLException {
         statement.setString(1, lecturer.getName());
         statement.setString(2, lecturer.getLogin());
-        statement.setString(3, lecturer.getPassword());
+        try {
+            statement.setString(3, CryptoUtils.byteArrayToHexString(CryptoUtils.computeHash(lecturer.getPassword())));
+        } catch (NoSuchAlgorithmException e) {
+            logger.error("Error trying to crypto password", e);
+        }
     }
 
     @Override
@@ -109,9 +117,7 @@ public class LecturerDAO implements I_LecturerDAO {
     }
 
     private void setStatementForUpdate(Lecturer lecturer, PreparedStatement statement) throws SQLException {
-        statement.setString(1, lecturer.getName());
-        statement.setString(2, lecturer.getLogin());
-        statement.setString(3, lecturer.getPassword());
+        setStatementForAdd(lecturer, statement);
         statement.setInt(4, lecturer.getId());
     }
 

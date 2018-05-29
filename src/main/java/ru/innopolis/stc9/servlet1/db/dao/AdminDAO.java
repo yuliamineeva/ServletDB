@@ -1,22 +1,30 @@
 package ru.innopolis.stc9.servlet1.db.dao;
 
+import org.apache.log4j.Logger;
 import ru.innopolis.stc9.servlet1.db.connectionManager.ConnectionManagerJDBC;
+import ru.innopolis.stc9.servlet1.db.connectionManager.CryptoUtils;
 import ru.innopolis.stc9.servlet1.db.connectionManager.IConnectionManager;
 import ru.innopolis.stc9.servlet1.pojo.Admin;
 
+import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class AdminDAO implements I_AdminDAO {
     private static IConnectionManager connectionManager = ConnectionManagerJDBC.getInstance();
+    private final static Logger logger = Logger.getLogger(AdminDAO.class);
 
     @Override
     public boolean addAdmin(Admin admin) throws SQLException {
         Connection connection = connectionManager.getConnection();
         PreparedStatement statement = connection.prepareStatement("INSERT INTO admin (" +
                 "name, login, password) VALUES (?, ?, ?)");
-        setStatementForAdd(admin, statement);
+        try {
+            setStatementForAdd(admin, statement);
+        } catch (NoSuchAlgorithmException e) {
+            logger.error("Error trying to crypto password", e);
+        }
         int countRow = statement.executeUpdate();
         connection.close();
         if (countRow > 0) {
@@ -26,10 +34,10 @@ public class AdminDAO implements I_AdminDAO {
         }
     }
 
-    private void setStatementForAdd(Admin admin, PreparedStatement statement) throws SQLException {
+    private void setStatementForAdd(Admin admin, PreparedStatement statement) throws SQLException, NoSuchAlgorithmException {
         statement.setString(1, admin.getName());
         statement.setString(2, admin.getLogin());
-        statement.setString(3, admin.getPassword());
+        statement.setString(3, CryptoUtils.byteArrayToHexString(CryptoUtils.computeHash(admin.getPassword())));
     }
 
 
@@ -110,9 +118,11 @@ public class AdminDAO implements I_AdminDAO {
     }
 
     private void setStatementForUpdate(Admin admin, PreparedStatement statement) throws SQLException {
-        statement.setString(1, admin.getName());
-        statement.setString(2, admin.getLogin());
-        statement.setString(3, admin.getPassword());
+        try {
+            setStatementForAdd(admin, statement);
+        } catch (NoSuchAlgorithmException e) {
+            logger.error("Error trying to crypto password", e);
+        }
         statement.setInt(4, admin.getId());
     }
 

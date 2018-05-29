@@ -20,6 +20,12 @@ public class Lecturer {
         this.password = password;
     }
 
+    public Lecturer(String name, String login, String password) {
+        this.name = name;
+        this.login = login;
+        this.password = password;
+    }
+
     public int getId() {
         return id;
     }

@@ -2,7 +2,9 @@ package ru.innopolis.stc9.servlet1;
 
 import ru.innopolis.stc9.servlet1.db.dao.*;
 import ru.innopolis.stc9.servlet1.pojo.Admin;
+import ru.innopolis.stc9.servlet1.pojo.Lecturer;
 import ru.innopolis.stc9.servlet1.pojo.Role;
+import ru.innopolis.stc9.servlet1.pojo.Student;
 import ru.innopolis.stc9.servlet1.service.EducationalService;
 import ru.innopolis.stc9.servlet1.service.UserService;
 
@@ -10,113 +12,103 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class Main {
+    public static EducationalService educationalService = new EducationalService();
+    public static UserService userService = new UserService();
+
     public static void main(String[] args) {
-        I_StudentDAO studentDAO = new StudentDAO();
         I_UserDAO userDAO = new UserDAO();
-        I_LecturerDAO lecturerDAO = new LecturerDAO();
+
+//        try {
+//            checkAdmin();
+//            checkLecturer();
+//            checkStudent();
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+
+//        checkRole();
+    }
+
+    public static void checkAdmin() throws SQLException {
+        System.out.println("------Admin----------");
         I_AdminDAO adminDAO = new AdminDAO();
-        I_RoleDAO roleDAO = new RoleDAO();
-        UserService userService = new UserService();
-        EducationalService educationalService = new EducationalService();
 
-//        try {
-//            Student st = studentDAO.getStudentById(5);
-//            System.out.println(st);
-//            System.out.println("1--------------");
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
+        System.out.println("\n addAdmin");
+        Admin admin1 = new Admin("admin3 name", "admin3", "admin3");
+        System.out.println(adminDAO.addAdmin(admin1));
 
-//
-//        List<Student> students = educationalService.getAllStudents();
-//        for (Student student : students) {
-//            System.out.println(student.toString());
-//        }
-//        System.out.println("2--------------");
-//
-//        try {
-//            User user1 = userDAO.getUserById(3);
-//            System.out.println(user1);
-//            User user2 = userDAO.getUserByLogin("admin");
-//            System.out.println(user2);
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        System.out.println("3--------------");
+        System.out.println("\n updateAdmin");
+        Admin admin2 = new Admin(1, "Минеева Юлия Николаевна", "admin", "admin");
+        System.out.println(adminDAO.updateAdmin(admin2));
 
-//        try {
-//            List<User> users2 =userDAO.getAllUsersByRole("student");
-//            for (User user : users2) {
-//                System.out.println(user.toString());
-//
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        System.out.println("выше по роли список--------------");
-
-//        List<User> users = educationalService.getAllUsers();
-//        System.out.println(users.size());
-//        for (User user : users) {
-//            System.out.println(user.toString());
-//        }
-//
-//        System.out.println("выше весь список--------------");
-
-//        Lecturer lec3 = null;
-//        Lecturer lec1 = null;
-//        try {
-//            lec3 = lecturerDAO.getLecturerById(2);
-//            lec1 = lecturerDAO.getLecturerByLogin("lvov");
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        System.out.println(lec3);
-//        System.out.println(lec1);
-//        System.out.println("лекторы--------------");
-
-//        String login = "admin";
-//        String password = "admin";
-//        if (userService.checkAuth(login, password)) {
-//            int role = userService.getRole(login);
-//            String userInfo = userService.getUsersFieldFromDB(login);
-//            System.out.println("role " + role);
-//            System.out.println(userInfo);
-//        }
-//
-//        List<Lecturer> lecturers = educationalService.getAllLecturers();
-//        for (Lecturer lecturer : lecturers) {
-//            System.out.println(lecturer.toString());
-//        }
-//        System.out.println("лекторы список--------------");
-
-//        try {
-//            Admin adm1 = adminDAO.getAdminById(2);
-//            System.out.println(adm1);
-//            Admin adm2 = adminDAO.getAdminByLogin("admin");
-//            System.out.println(adm2);
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-
+        System.out.println("\n getAllAdmins");
         List<Admin> admins = educationalService.getAllAdmins();
         for (Admin admin : admins) {
             System.out.println(admin.toString());
         }
+        System.out.println("----------");
+    }
 
+    public static void checkLecturer() throws SQLException {
+        System.out.println("------Lecturer----------");
+        I_LecturerDAO lecturerDAO = new LecturerDAO();
+
+        System.out.println("\n addLecturer");
+        Lecturer lecturer1 = new Lecturer("Зайцев Николай Петрович", "zaycev", "zaycev");
+        System.out.println(lecturerDAO.addLecturer(lecturer1));
+
+        System.out.println("\n updateLecturer");
+        Lecturer lecturer2 = new Lecturer(1, "Львов Сергей Петрович", "lvov", "lvov");
+        System.out.println(lecturerDAO.updateLecturer(lecturer2));
+
+        System.out.println("\n updateLecturer");
+        Lecturer lecturer3 = new Lecturer(2, "Тополев Алексей Иванович", "topolev", "topolev");
+        System.out.println(lecturerDAO.updateLecturer(lecturer3));
+
+        System.out.println("\n getAllLecturers");
+        List<Lecturer> lecturers = educationalService.getAllLecturers();
+        for (Lecturer lecturer : lecturers) {
+            System.out.println(lecturer.toString());
+        }
+        System.out.println("----------");
+    }
+
+    public static void checkStudent() throws SQLException {
+        System.out.println("------Student----------");
+        I_StudentDAO studentDAO = new StudentDAO();
+
+        System.out.println("\n addStudent");
+        Student student1 = new Student("Гусева Василина Макаровна", "student", "student");
+        System.out.println(studentDAO.addStudent(student1));
+
+        System.out.println("\n updateStudent");
+        Student student2 = new Student(1, "Иванов Иван Иванович", "ivanov", "ivanov", 0);
+        System.out.println(studentDAO.updateStudent(student2));
+
+        System.out.println("\n getAllStudents");
+        List<Student> students = educationalService.getAllStudents();
+        for (Student student : students) {
+            System.out.println(student.toString());
+        }
+        System.out.println("----------");
+    }
+
+    public static void checkRole() {
+        System.out.println("------Role----------");
+        I_RoleDAO roleDAO = new RoleDAO();
+
+        System.out.println("\n getAllRoles");
+        List<Role> roles = educationalService.getAllRoles();
+        for (Role role : roles) {
+            System.out.println(role.toString());
+        }
+
+        System.out.println("\n getRoleById");
         try {
             Role role1 = roleDAO.getRoleById(1);
             System.out.println(role1);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        System.out.println("----------");
-
-        List<Role> roles = educationalService.getAllRoles();
-        for (Role role : roles) {
-            System.out.println(role.toString());
-
-        }
-
     }
 }

@@ -8,6 +8,12 @@ public class Student {
     private String password;
     private float averageMark;
 
+    public Student(String name, String login, String password) {
+        this.name = name;
+        this.login = login;
+        this.password = password;
+    }
+
     public Student(String name, String login, String password, float averageMark) {
         this.name = name;
         this.login = login;
