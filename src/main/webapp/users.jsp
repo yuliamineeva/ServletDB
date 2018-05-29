@@ -9,7 +9,7 @@
         <H2>Список всех пользователей</H2>
         <br>
         <div class="usersList">
-            <table align="center" width="70%" border="1" style="border-color:blue;">
+            <table align="center" width="60%" border="1" style="border-color:blue;">
                 <tr>
                     <th align="center">ID пользователя</th>
                     <th align="center">login</th>

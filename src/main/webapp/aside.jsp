@@ -5,13 +5,13 @@
     <p><b>МЕНЮ:</b></p>
     <BR>
     <ul>
-        <li><a href="${pageContext.request.contextPath}/Курсы">Курсы</a></li>
+        <li><a href="${pageContext.request.contextPath}/list?listType=studyCourses">Курсы</a></li>
         <BR>
-        <li><a href="${pageContext.request.contextPath}/Расписание">Расписание</a></li>
+        <li><a href="${pageContext.request.contextPath}/list?listType=lessons">Расписание</a></li>
         <BR>
-        <li><a href="${pageContext.request.contextPath}/Посещаемость">Посещаемость</a></li>
+        <li><a href="${pageContext.request.contextPath}/list?listType=attendance">Посещаемость</a></li>
         <BR>
-        <li><a href="${pageContext.request.contextPath}/Оценки">Оценки</a></li>
+        <li><a href="${pageContext.request.contextPath}/list?listType=marks">Оценки</a></li>
         <BR>
         <%if ((Integer) request.getSession().getAttribute("role") == 1) {%>
         <li><a href="${pageContext.request.contextPath}/list?listType=users">Пользователи</a></li>
