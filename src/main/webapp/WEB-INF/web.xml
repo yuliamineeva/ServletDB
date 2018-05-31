@@ -15,15 +15,6 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>marks</servlet-name>
-        <servlet-class>ru.innopolis.stc9.servlet1.controller.MarksController</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>marks</servlet-name>
-        <url-pattern>/marks</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
         <servlet-name>LoginController</servlet-name>
         <servlet-class>ru.innopolis.stc9.servlet1.controller.LoginController</servlet-class>
     </servlet>

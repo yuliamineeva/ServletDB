@@ -19,21 +19,10 @@ public class Attendance {
         this.be_present = be_present;
     }
 
-    public Attendance(Date date, int lesson_id, int student_id, boolean be_present) {
-        this.date = date;
-        this.lesson_id = lesson_id;
-        this.student_id = student_id;
-        this.be_present = be_present;
-    }
-
     public Attendance(int id, Date date, int lesson_id, Lesson lesson, int student_id, Student student, boolean be_present) {
-        this.id = id;
-        this.date = date;
-        this.lesson_id = lesson_id;
+        this(id, date, lesson_id, student_id, be_present);
         this.lesson = lesson;
-        this.student_id = student_id;
         this.student = student;
-        this.be_present = be_present;
     }
 
     public int getId() {

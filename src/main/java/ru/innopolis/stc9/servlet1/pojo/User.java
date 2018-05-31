@@ -6,22 +6,19 @@ public class User {
     private int role_number;
     private Role role;
 
-    public User(String login, int role_number) {
-        this.login = login;
-        this.role_number = role_number;
-    }
-
     public User(int id, String login, int role_number) {
-        this.id = id;
-        this.login = login;
-        this.role_number = role_number;
+        setFields(id, login, role_number);
     }
 
     public User(int id, String login, int role_number, Role role) {
+        setFields(id, login, role_number);
+        this.role = role;
+    }
+
+    private void setFields(int id, String login, int role_number) {
         this.id = id;
         this.login = login;
         this.role_number = role_number;
-        this.role = role;
     }
 
     public int getId() {
@@ -60,16 +57,16 @@ public class User {
     public String toString() {
         if (role != null) {
             return "User{" +
-                    "id=" + id +
-                    ", login='" + login + '\'' +
-                    ", role_number=" + role_number +
+                    "id= " + id +
+                    ", login= " + login +
+                    ", role_number= " + role_number +
                     ", role_name=" + role.getRole_name() +
                     '}';
         } else {
             return "User{" +
-                    "id=" + id +
-                    ", login='" + login + '\'' +
-                    ", role_number=" + role_number +
+                    "id= " + id +
+                    ", login= " + login +
+                    ", role_number= " + role_number +
                     '}';
         }
     }

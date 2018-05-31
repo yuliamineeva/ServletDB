@@ -3,19 +3,18 @@ package ru.innopolis.stc9.servlet1.service;
 import org.apache.log4j.Logger;
 import ru.innopolis.stc9.servlet1.db.connectionManager.CryptoUtils;
 import ru.innopolis.stc9.servlet1.db.dao.*;
-import ru.innopolis.stc9.servlet1.pojo.Admin;
-import ru.innopolis.stc9.servlet1.pojo.Lecturer;
-import ru.innopolis.stc9.servlet1.pojo.Student;
-import ru.innopolis.stc9.servlet1.pojo.User;
+import ru.innopolis.stc9.servlet1.pojo.*;
 
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class UserService {
     private static I_UserDAO userDao = new UserDAO();
     private I_AdminDAO adminDAO = new AdminDAO();
     private I_LecturerDAO lecturerDAO = new LecturerDAO();
     private I_StudentDAO studentDAO = new StudentDAO();
+    I_MarksDAO marksDAO = new MarksDAO();
     private final static Logger logger = Logger.getLogger(AdminDAO.class);
 
     public User getUserByLogin(String login) {
@@ -26,6 +25,16 @@ public class UserService {
             e.printStackTrace();
         }
         return user;
+    }
+
+    public Student getStudentByLogin(String login) {
+        Student student = null;
+        try {
+            student = studentDAO.getStudentByLogin(login);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return student;
     }
 
     public boolean checkAuth(String login, String password) {
@@ -95,6 +104,7 @@ public class UserService {
                     Student student = null;
                     try {
                         student = studentDAO.getStudentByLogin(login);
+                        student.setAverageMark(calculateAverageMark(student));
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
@@ -110,8 +120,33 @@ public class UserService {
         try {
             user = userDao.getUserByLogin(login);
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error trying get Role from DB", e);
         }
         return (user != null) ? user.getRole_number() : 0;
     }
+
+    public float calculateAverageMark(Student student) {
+        ArrayList<Marks> marksArrayList = null;
+        try {
+            marksArrayList = marksDAO.getMarksByStudent(student);
+        } catch (SQLException e) {
+            logger.error("Error trying get marks from DB", e);
+        }
+        int countOfMarks = 0;
+        int summOfMarks = 0;
+        for (Marks marks : marksArrayList) {
+            if (marks.getMark() != null) {
+                countOfMarks++;
+                summOfMarks += marks.getMark().getIntValue();
+            }
+        }
+        float averageMark = 0;
+        if (countOfMarks != 0) {
+            averageMark = (float) summOfMarks / countOfMarks;
+        }
+        student.setAverageMark(averageMark);
+        return averageMark;
+    }
+
+    //todo в методах add добавить добавление в таблицу user в сервисах и проверку, нет ли такого логина
 }

@@ -9,18 +9,14 @@ public class Lecturer {
 
     public Lecturer(int id, String name, String login, String password) {
         this.id = id;
-        this.name = name;
-        this.login = login;
-        this.password = password;
-    }
-
-    public Lecturer(String name, String login, String password, int role) {
-        this.name = name;
-        this.login = login;
-        this.password = password;
+        setFields(name, login, password);
     }
 
     public Lecturer(String name, String login, String password) {
+        setFields(name, login, password);
+    }
+
+    private void setFields(String name, String login, String password) {
         this.name = name;
         this.login = login;
         this.password = password;

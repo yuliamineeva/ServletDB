@@ -10,10 +10,8 @@ public class Lesson {
     private StudyCourse studyCourse;
 
     public Lesson(int id, String topic, Date date, int studycourse_id) {
+        this(topic, date, studycourse_id);
         this.id = id;
-        this.topic = topic;
-        this.date = date;
-        this.studycourse_id = studycourse_id;
     }
 
     public Lesson(String topic, Date date, int studycourse_id) {
@@ -23,10 +21,8 @@ public class Lesson {
     }
 
     public Lesson(int id, String topic, Date date, int studycourse_id, StudyCourse studyCourse) {
+        this(topic, date, studycourse_id);
         this.id = id;
-        this.topic = topic;
-        this.date = date;
-        this.studycourse_id = studycourse_id;
         this.studyCourse = studyCourse;
     }
 

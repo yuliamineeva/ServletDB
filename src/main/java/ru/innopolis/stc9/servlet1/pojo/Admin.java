@@ -20,12 +20,6 @@ public class Admin {
         this.password = password;
     }
 
-    public Admin(String name, String login, String password, int role) {
-        this.name = name;
-        this.login = login;
-        this.password = password;
-    }
-
     public int getId() {
         return id;
     }
@@ -66,6 +60,6 @@ public class Admin {
     public String toString() {
         return "user= " + ROLE + ", " +
                 "name= " + name + ", " +
-                "login=" + login;
+                "login= " + login;
     }
 }

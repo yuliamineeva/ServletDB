@@ -9,24 +9,24 @@ public class Student {
     private float averageMark;
 
     public Student(String name, String login, String password) {
-        this.name = name;
-        this.login = login;
-        this.password = password;
+        setFields(name, login, password);
     }
 
     public Student(String name, String login, String password, float averageMark) {
-        this.name = name;
-        this.login = login;
-        this.password = password;
+        setFields(name, login, password);
         this.averageMark = averageMark;
     }
 
     public Student(int id, String name, String login, String password, float averageMark) {
+        setFields(name, login, password);
         this.id = id;
+        this.averageMark = averageMark;
+    }
+
+    private void setFields(String name, String login, String password) {
         this.name = name;
         this.login = login;
         this.password = password;
-        this.averageMark = averageMark;
     }
 
     public int getId() {

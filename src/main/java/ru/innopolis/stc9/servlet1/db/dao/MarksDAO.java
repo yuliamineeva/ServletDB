@@ -147,24 +147,6 @@ public class MarksDAO implements I_MarksDAO {
         return marksArrayList;
     }
 
-    /**
-     * todo перенести в сервис calculateAverageMark ???
-     */
-    @Override
-    public float calculateAverageMark(Student student) throws SQLException {
-        ArrayList<Marks> marksArrayList = getMarksByStudent(student);
-        int countOfMarks = 0;
-        int summOfMarks = 0;
-        for (Marks marks : marksArrayList) {
-            if (marks.getMark() != null) {
-                countOfMarks++;
-                summOfMarks += marks.getMark().getIntValue();
-            }
-        }
-        float averageMark = (float) summOfMarks / countOfMarks;
-        return averageMark;
-    }
-
     @Override
     public boolean updateMarks(Marks marks) throws SQLException {
         Connection connection = connectionManager.getConnection();

@@ -21,8 +21,6 @@ public interface I_MarksDAO {
 
     public ArrayList<Marks> getMarksByDate(Date date) throws SQLException;
 
-    public float calculateAverageMark(Student student) throws SQLException;
-
     public boolean updateMarks(Marks marks) throws SQLException;
 
     public boolean deleteMarksById(int id) throws SQLException;

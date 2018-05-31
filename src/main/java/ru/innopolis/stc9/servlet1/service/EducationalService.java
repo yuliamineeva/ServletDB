@@ -5,6 +5,8 @@ import ru.innopolis.stc9.servlet1.db.dao.*;
 import ru.innopolis.stc9.servlet1.pojo.*;
 
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class EducationalService {
@@ -24,7 +26,7 @@ public class EducationalService {
         try {
             return studentDAO.getAllStudents();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("error accessing database", e);
         }
         return null;
     }
@@ -33,7 +35,7 @@ public class EducationalService {
         try {
             return lecturerDAO.getAllLecturers();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("error accessing database", e);
         }
         return null;
     }
@@ -42,7 +44,7 @@ public class EducationalService {
         try {
             return adminDao.getAllAdmins();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("error accessing database", e);
         }
         return null;
     }
@@ -51,7 +53,7 @@ public class EducationalService {
         try {
             return userDAO.getAllUsers();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("error accessing database", e);
         }
         return null;
     }
@@ -60,7 +62,7 @@ public class EducationalService {
         try {
             return roleDAO.getAllRoles();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("error accessing database", e);
         }
         return null;
     }
@@ -75,7 +77,7 @@ public class EducationalService {
             }
             return coursesWithLecturer;
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("error accessing database", e);
         }
         return null;
     }
@@ -90,7 +92,7 @@ public class EducationalService {
             }
             return lessonsWithCourses;
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("error accessing database", e);
         }
         return null;
     }
@@ -121,7 +123,24 @@ public class EducationalService {
             }
             return marksListWithAllField;
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("error accessing database", e);
+        }
+        return null;
+    }
+
+    public List<Marks> getMarksByStudent(Student student) {
+        try {
+            List<Marks> marksList = marksDAO.getMarksByStudent(student);
+            List<Marks> marksListWithAllField = new ArrayList<>();
+            for (Marks marks : marksList) {
+                marks.setLesson(lessonDAO.getLessonById(marks.getLesson_id()));
+                marks.setStudyCourse(studyCourseDAO.getStudyCourseById(marks.getStudycourse_id()));
+                marks.setStudent(student);
+                marksListWithAllField.add(marks);
+            }
+            return marksListWithAllField;
+        } catch (SQLException e) {
+            logger.error("error accessing database", e);
         }
         return null;
     }
@@ -133,12 +152,83 @@ public class EducationalService {
             for (Attendance attendance : attList) {
                 attendance.setLesson(lessonDAO.getLessonById(attendance.getLesson_id()));
                 attendance.setStudent(studentDAO.getStudentById(attendance.getStudent_id()));
-
                 attListWithAllField.add(attendance);
             }
             return attListWithAllField;
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("error accessing database", e);
+        }
+        return null;
+    }
+
+    public List<Attendance> chooseAttendanceList(String chooseLess, String chooseDate, String chooseStudent) {
+        List<Attendance> result = new ArrayList<>();
+        if (chooseLess == null && chooseDate == null && chooseStudent == null) {
+            result = getAllAttendance();
+        }
+        if (chooseLess != null) {
+            result = getAttendanceByLesson(Integer.parseInt(chooseLess));
+        }
+        if (chooseDate != null) {
+            result = getAttendanceByDate(chooseDate);
+        }
+        if (chooseStudent != null) {
+            result = getAttendanceByStudent(Integer.parseInt(chooseStudent));
+        }
+        return result;
+    }
+
+    public List<Attendance> getAttendanceByLesson(int lesson_id) {
+        try {
+            Lesson lesson = lessonDAO.getLessonById(lesson_id);
+            List<Attendance> attList = attendanceDAO.getAttendanceByLesson(lesson);
+            List<Attendance> attListWithAllField = new ArrayList<>();
+            for (Attendance attendance : attList) {
+                attendance.setLesson(lesson);
+                attendance.setStudent(studentDAO.getStudentById(attendance.getStudent_id()));
+                attListWithAllField.add(attendance);
+            }
+            return attListWithAllField;
+
+        } catch (SQLException e) {
+            logger.error("error accessing database", e);
+        }
+        return null;
+    }
+
+    public List<Attendance> getAttendanceByDate(String date) {
+        try {
+            Date lessonDate = new SimpleDateFormat("dd.MM.yyyy").parse(date);
+            List<Attendance> attList = attendanceDAO.getAttendanceByDate(lessonDate);
+            List<Attendance> attListWithAllField = new ArrayList<>();
+            for (Attendance attendance : attList) {
+                attendance.setLesson(lessonDAO.getLessonById(attendance.getLesson_id()));
+                attendance.setStudent(studentDAO.getStudentById(attendance.getStudent_id()));
+                attListWithAllField.add(attendance);
+            }
+            return attListWithAllField;
+        } catch (SQLException e) {
+            logger.error("error accessing database", e);
+        } catch (ParseException e) {
+            logger.error("date format error", e);
+        }
+        return null;
+    }
+
+    public List<Attendance> getAttendanceByStudent(int student_id) {
+        try {
+            Student student = studentDAO.getStudentById(student_id);
+            List<Attendance> attList = attendanceDAO.getAttendanceByStudent(student);
+            List<Attendance> attListWithAllField = new ArrayList<>();
+            for (Attendance attendance : attList) {
+                attendance.setLesson(lessonDAO.getLessonById(attendance.getLesson_id()));
+                attendance.setStudent(student);
+                attListWithAllField.add(attendance);
+            }
+            return attListWithAllField;
+
+        } catch (SQLException e) {
+            logger.error("error accessing database", e);
         }
         return null;
     }

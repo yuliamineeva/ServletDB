@@ -18,6 +18,11 @@ public class Main {
     public static void main(String[] args) {
         I_UserDAO userDAO = new UserDAO();
 
+//        Lesson lesson = new Lesson(1, "Lesson1", new Date(), 1);
+//        Student student = new Student(2,"Ivan", "loginI", "passw", 0);
+//        Attendance attendance = new Attendance(1, new Date(), 1, lesson, 2, student, true);
+//        System.out.println(attendance);
+
 //        try {
 //            checkAdmin();
 //            checkLecturer();
