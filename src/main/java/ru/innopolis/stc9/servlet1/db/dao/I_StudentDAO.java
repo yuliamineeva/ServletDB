@@ -6,15 +6,15 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface I_StudentDAO {
-    public boolean addStudent(Student student) throws SQLException;
+    boolean addStudent(Student student) throws SQLException;
 
-    public List<Student> getAllStudents() throws SQLException;
+    List<Student> getAllStudents() throws SQLException;
 
-    public Student getStudentByLogin(String login) throws SQLException;
+    Student getStudentByLogin(String login) throws SQLException;
 
-    public Student getStudentById(int id) throws SQLException;
+    Student getStudentById(int id) throws SQLException;
 
-    public boolean updateStudent(Student student) throws SQLException;
+    boolean updateStudent(Student student) throws SQLException;
 
-    public boolean deleteStudentById(int id) throws SQLException;
+    boolean deleteStudentById(int id) throws SQLException;
 }

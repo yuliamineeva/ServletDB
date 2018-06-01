@@ -7,15 +7,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public interface I_StudyCourseDAO {
-    public boolean addStudyCourse(StudyCourse studyCourse) throws SQLException;
+    boolean addStudyCourse(StudyCourse studyCourse) throws SQLException;
 
-    public StudyCourse getStudyCourseById(int id) throws SQLException;
+    StudyCourse getStudyCourseById(int id) throws SQLException;
 
-    public ArrayList<StudyCourse> getAllStudyCourse() throws SQLException;
+    ArrayList<StudyCourse> getAllStudyCourse() throws SQLException;
 
-    public ArrayList<StudyCourse> getStudyCourseByLecturer(Lecturer lecturer) throws SQLException;
+    ArrayList<StudyCourse> getStudyCourseByLecturer(Lecturer lecturer) throws SQLException;
 
-    public boolean updateStudyCourse(StudyCourse studyCourse) throws SQLException;
+    boolean updateStudyCourse(StudyCourse studyCourse) throws SQLException;
 
-    public boolean deleteStudyCourseById(int id) throws SQLException;
+    boolean deleteStudyCourseById(int id) throws SQLException;
 }

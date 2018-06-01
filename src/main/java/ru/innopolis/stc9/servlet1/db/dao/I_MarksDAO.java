@@ -9,19 +9,19 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public interface I_MarksDAO {
-    public boolean addMarks(Marks marks) throws SQLException;
+    boolean addMarks(Marks marks) throws SQLException;
 
-    public Marks getMarksById(int id) throws SQLException;
+    Marks getMarksById(int id) throws SQLException;
 
-    public ArrayList<Marks> getAllMarks() throws SQLException;
+    ArrayList<Marks> getAllMarks() throws SQLException;
 
-    public ArrayList<Marks> getMarksByLesson(Lesson lesson) throws SQLException;
+    ArrayList<Marks> getMarksByLesson(Lesson lesson) throws SQLException;
 
-    public ArrayList<Marks> getMarksByStudent(Student student) throws SQLException;
+    ArrayList<Marks> getMarksByStudent(Student student) throws SQLException;
 
-    public ArrayList<Marks> getMarksByDate(Date date) throws SQLException;
+    ArrayList<Marks> getMarksByDate(Date date) throws SQLException;
 
-    public boolean updateMarks(Marks marks) throws SQLException;
+    boolean updateMarks(Marks marks) throws SQLException;
 
-    public boolean deleteMarksById(int id) throws SQLException;
+    boolean deleteMarksById(int id) throws SQLException;
 }

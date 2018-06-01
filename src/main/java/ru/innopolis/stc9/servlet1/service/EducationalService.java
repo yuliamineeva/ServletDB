@@ -9,7 +9,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class EducationalService {
+public class EducationalService implements I_EducationalService {
     private static Logger logger = Logger.getLogger(EducationalService.class);
     I_AdminDAO adminDao = new AdminDAO();
     I_StudentDAO studentDAO = new StudentDAO();

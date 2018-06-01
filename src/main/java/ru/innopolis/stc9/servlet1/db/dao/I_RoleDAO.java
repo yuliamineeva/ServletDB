@@ -7,13 +7,13 @@ import java.util.List;
 
 public interface I_RoleDAO {
 
-    public boolean addRole(Role role) throws SQLException;
+    boolean addRole(Role role) throws SQLException;
 
-    public Role getRoleById(int id) throws SQLException;
+    Role getRoleById(int id) throws SQLException;
 
-    public List<Role> getAllRoles() throws SQLException;
+    List<Role> getAllRoles() throws SQLException;
 
-    public boolean updateRole(Role role) throws SQLException;
+    boolean updateRole(Role role) throws SQLException;
 
-    public boolean deleteRoleById(int id) throws SQLException;
+    boolean deleteRoleById(int id) throws SQLException;
 }

@@ -9,7 +9,7 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class UserService {
+public class UserService implements I_UserService {
     private static I_UserDAO userDao = new UserDAO();
     private I_AdminDAO adminDAO = new AdminDAO();
     private I_LecturerDAO lecturerDAO = new LecturerDAO();

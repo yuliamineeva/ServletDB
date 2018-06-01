@@ -7,15 +7,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public interface I_LessonDAO {
-    public boolean addLesson(Lesson lesson) throws SQLException;
+    boolean addLesson(Lesson lesson) throws SQLException;
 
-    public Lesson getLessonById(int id) throws SQLException;
+    Lesson getLessonById(int id) throws SQLException;
 
-    public ArrayList<Lesson> getAllLessons() throws SQLException;
+    ArrayList<Lesson> getAllLessons() throws SQLException;
 
-    public ArrayList<Lesson> getLessonsByStudyCourse(StudyCourse studyCourse) throws SQLException;
+    ArrayList<Lesson> getLessonsByStudyCourse(StudyCourse studyCourse) throws SQLException;
 
-    public boolean updateLesson(Lesson lesson) throws SQLException;
+    boolean updateLesson(Lesson lesson) throws SQLException;
 
-    public boolean deleteLessonById(int id) throws SQLException;
+    boolean deleteLessonById(int id) throws SQLException;
 }

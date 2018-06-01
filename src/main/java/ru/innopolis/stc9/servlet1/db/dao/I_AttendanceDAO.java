@@ -9,19 +9,19 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public interface I_AttendanceDAO {
-    public boolean addAttendance(Attendance attendance) throws SQLException;
+    boolean addAttendance(Attendance attendance) throws SQLException;
 
-    public Attendance getAttendanceById(int id) throws SQLException;
+    Attendance getAttendanceById(int id) throws SQLException;
 
-    public ArrayList<Attendance> getAllAttendance() throws SQLException;
+    ArrayList<Attendance> getAllAttendance() throws SQLException;
 
-    public ArrayList<Attendance> getAttendanceByLesson(Lesson lesson) throws SQLException;
+    ArrayList<Attendance> getAttendanceByLesson(Lesson lesson) throws SQLException;
 
-    public ArrayList<Attendance> getAttendanceByStudent(Student student) throws SQLException;
+    ArrayList<Attendance> getAttendanceByStudent(Student student) throws SQLException;
 
-    public ArrayList<Attendance> getAttendanceByDate(Date date) throws SQLException;
+    ArrayList<Attendance> getAttendanceByDate(Date date) throws SQLException;
 
-    public boolean updateAttendance(Attendance attendance) throws SQLException;
+    boolean updateAttendance(Attendance attendance) throws SQLException;
 
-    public boolean deleteAttendanceById(int id) throws SQLException;
+    boolean deleteAttendanceById(int id) throws SQLException;
 }

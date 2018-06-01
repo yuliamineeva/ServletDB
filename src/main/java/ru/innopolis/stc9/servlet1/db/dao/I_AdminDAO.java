@@ -7,15 +7,15 @@ import java.util.List;
 
 public interface I_AdminDAO {
 
-    public boolean addAdmin(Admin admin) throws SQLException;
+    boolean addAdmin(Admin admin) throws SQLException;
 
-    public List<Admin> getAllAdmins() throws SQLException;
+    List<Admin> getAllAdmins() throws SQLException;
 
-    public Admin getAdminByLogin(String login) throws SQLException;
+    Admin getAdminByLogin(String login) throws SQLException;
 
-    public Admin getAdminById(int id) throws SQLException;
+    Admin getAdminById(int id) throws SQLException;
 
-    public boolean updateAdmin(Admin admin) throws SQLException;
+    boolean updateAdmin(Admin admin) throws SQLException;
 
-    public boolean deleteAdminById(int id) throws SQLException;
+    boolean deleteAdminById(int id) throws SQLException;
 }
