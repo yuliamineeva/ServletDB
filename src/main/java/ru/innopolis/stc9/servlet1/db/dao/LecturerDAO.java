@@ -11,25 +11,35 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Класс лектора, работающий с базой данных
+ */
 public class LecturerDAO implements I_LecturerDAO {
     private static IConnectionManager connectionManager = ConnectionManagerJDBC.getInstance();
     private final static Logger logger = Logger.getLogger(LecturerDAO.class);
 
+    /**
+     * Добавить лектора в базу данных
+     *
+     * @param lecturer
+     * @return boolean результат выполнения метода
+     * @throws SQLException
+     */
     @Override
     public boolean addLecturer(Lecturer lecturer) throws SQLException {
+        if (lecturer == null) return false;
         Connection connection = connectionManager.getConnection();
         PreparedStatement statement = connection.prepareStatement("INSERT INTO lecturer " +
                 "(name, login, password) VALUES (?, ?, ?)");
         setStatementForAdd(lecturer, statement);
         int countRow = statement.executeUpdate();
         connection.close();
-        if (countRow > 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return countRow > 0;
     }
 
+    /**
+     * Обработка statement
+     */
     private void setStatementForAdd(Lecturer lecturer, PreparedStatement statement) throws SQLException {
         statement.setString(1, lecturer.getName());
         statement.setString(2, lecturer.getLogin());
@@ -40,6 +50,12 @@ public class LecturerDAO implements I_LecturerDAO {
         }
     }
 
+    /**
+     * Получить список всех лекторов
+     *
+     * @return List<Lecturer>
+     * @throws SQLException
+     */
     @Override
     public List<Lecturer> getAllLecturers() throws SQLException {
         Connection connection = connectionManager.getConnection();
@@ -51,9 +67,12 @@ public class LecturerDAO implements I_LecturerDAO {
         return lecturers;
     }
 
+    /**
+     * Обработка resultSet
+     */
     private List<Lecturer> getLecturerlistFromResultset(ResultSet resultSet) throws SQLException {
         List<Lecturer> lecturers = new ArrayList<>();
-        Lecturer lecturer = null;
+        Lecturer lecturer;
         while (resultSet.next()) {
             lecturer = new Lecturer(
                     resultSet.getInt("id"),
@@ -65,8 +84,16 @@ public class LecturerDAO implements I_LecturerDAO {
         return lecturers;
     }
 
+    /**
+     * Получить лектора по логину
+     *
+     * @param login
+     * @return Lecturer
+     * @throws SQLException
+     */
     @Override
     public Lecturer getLecturerByLogin(String login) throws SQLException {
+        if (login == null) return null;
         Connection connection = connectionManager.getConnection();
         PreparedStatement statement = connection.prepareStatement("SELECT * " +
                 "FROM lecturer WHERE login = ?");
@@ -77,6 +104,13 @@ public class LecturerDAO implements I_LecturerDAO {
         return lecturer;
     }
 
+    /**
+     * Получить лектора по id
+     *
+     * @param id
+     * @return Lecturer
+     * @throws SQLException
+     */
     @Override
     public Lecturer getLecturerById(int id) throws SQLException {
         Connection connection = connectionManager.getConnection();
@@ -89,7 +123,11 @@ public class LecturerDAO implements I_LecturerDAO {
         return lecturer;
     }
 
+    /**
+     * Обработка resultSet
+     */
     private Lecturer getlecturerFromResultset(ResultSet resultSet) throws SQLException {
+        if (resultSet == null) return null;
         Lecturer lecturer = null;
         if (resultSet.next()) {
             lecturer = new Lecturer(
@@ -101,26 +139,40 @@ public class LecturerDAO implements I_LecturerDAO {
         return lecturer;
     }
 
+    /**
+     * Обновить лектора в базе данных
+     *
+     * @param lecturer
+     * @return boolean результат выполнения метода
+     * @throws SQLException
+     */
     @Override
     public boolean updateLecturer(Lecturer lecturer) throws SQLException {
+        if (lecturer == null) return false;
         Connection connection = connectionManager.getConnection();
         PreparedStatement statement = connection.prepareStatement("UPDATE lecturer " +
                 "SET name = ?, login = ?, password = ? WHERE id = ?");
         setStatementForUpdate(lecturer, statement);
         int countRow = statement.executeUpdate();
         connection.close();
-        if (countRow > 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return countRow > 0;
     }
 
+    /**
+     * Обработка statement
+     */
     private void setStatementForUpdate(Lecturer lecturer, PreparedStatement statement) throws SQLException {
         setStatementForAdd(lecturer, statement);
         statement.setInt(4, lecturer.getId());
     }
 
+    /**
+     * Удалить лектора из базы данных
+     *
+     * @param id
+     * @return boolean результат выполнения метода
+     * @throws SQLException
+     */
     @Override
     public boolean deleteLecturerById(int id) throws SQLException {
         Connection connection = connectionManager.getConnection();
@@ -129,10 +181,6 @@ public class LecturerDAO implements I_LecturerDAO {
         statement.setInt(1, id);
         int countRow = statement.executeUpdate();
         connection.close();
-        if (countRow > 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return countRow > 0;
     }
 }

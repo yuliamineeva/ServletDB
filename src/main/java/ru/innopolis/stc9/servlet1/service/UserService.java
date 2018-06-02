@@ -9,14 +9,24 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+/**
+ * Класс, работающий с DAO -слоем, выводящий данные по пользователям
+ */
 public class UserService implements I_UserService {
     private static I_UserDAO userDao = new UserDAO();
     private I_AdminDAO adminDAO = new AdminDAO();
     private I_LecturerDAO lecturerDAO = new LecturerDAO();
     private I_StudentDAO studentDAO = new StudentDAO();
-    I_MarksDAO marksDAO = new MarksDAO();
+    private I_MarksDAO marksDAO = new MarksDAO();
     private final static Logger logger = Logger.getLogger(AdminDAO.class);
 
+    /**
+     * Получить пользователя из базы данных по логину
+     *
+     * @param login
+     * @return User
+     */
+    @Override
     public User getUserByLogin(String login) {
         User user = null;
         try {
@@ -27,6 +37,13 @@ public class UserService implements I_UserService {
         return user;
     }
 
+    /**
+     * Получить студента из базы данных по логину
+     *
+     * @param login
+     * @return Student
+     */
+    @Override
     public Student getStudentByLogin(String login) {
         Student student = null;
         try {
@@ -37,6 +54,14 @@ public class UserService implements I_UserService {
         return student;
     }
 
+    /**
+     * проверить логин и парололь на идентичность с базой данных
+     *
+     * @param login
+     * @param password
+     * @return boolean
+     */
+    @Override
     public boolean checkAuth(String login, String password) {
         User user = null;
         String passwordFromBD = null;
@@ -53,6 +78,13 @@ public class UserService implements I_UserService {
         return (user != null) && (passwordFromBD.equals(hashPassword));
     }
 
+    /**
+     * Получить пароль (хэш) из базы данных
+     *
+     * @param user
+     * @return String passwordFromBD
+     * @throws SQLException
+     */
     private String getPasswordFromDB(User user) throws SQLException {
         String passwordFromBD = null;
         if (user != null) {
@@ -76,6 +108,13 @@ public class UserService implements I_UserService {
         return passwordFromBD;
     }
 
+    /**
+     * Получить текстовую информацию из полей класса пользователей
+     *
+     * @param login
+     * @return String userInfo
+     */
+    @Override
     public String getUsersFieldFromDB(String login) {
         String userInfo = null;
         User user = getUserByLogin(login);
@@ -115,6 +154,13 @@ public class UserService implements I_UserService {
         return userInfo;
     }
 
+    /**
+     * Получить роль из базы данных
+     *
+     * @param login
+     * @return int
+     */
+    @Override
     public int getRole(String login) {
         User user = null;
         try {
@@ -125,6 +171,12 @@ public class UserService implements I_UserService {
         return (user != null) ? user.getRole_number() : 0;
     }
 
+    /**
+     * Рассчитать средний балл по студенту
+     * @param student
+     * @return float
+     */
+    @Override
     public float calculateAverageMark(Student student) {
         ArrayList<Marks> marksArrayList = null;
         try {
@@ -134,10 +186,12 @@ public class UserService implements I_UserService {
         }
         int countOfMarks = 0;
         int summOfMarks = 0;
-        for (Marks marks : marksArrayList) {
-            if (marks.getMark() != null) {
-                countOfMarks++;
-                summOfMarks += marks.getMark().getIntValue();
+        if (marksArrayList != null) {
+            for (Marks marks : marksArrayList) {
+                if (marks.getMark() != null) {
+                    countOfMarks++;
+                    summOfMarks += marks.getMark().getIntValue();
+                }
             }
         }
         float averageMark = 0;

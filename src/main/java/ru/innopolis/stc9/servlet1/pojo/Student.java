@@ -1,5 +1,8 @@
 package ru.innopolis.stc9.servlet1.pojo;
 
+/**
+ * Класс студента (POJO - слой)
+ */
 public class Student {
     public static final String ROLE = "student";
     private int id;

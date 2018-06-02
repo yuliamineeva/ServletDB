@@ -11,12 +11,23 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Класс админа, работающий с базой данных
+ */
 public class AdminDAO implements I_AdminDAO {
     private static IConnectionManager connectionManager = ConnectionManagerJDBC.getInstance();
     private final static Logger logger = Logger.getLogger(AdminDAO.class);
 
+    /**
+     * Добавить админа в базу данных
+     *
+     * @param admin
+     * @return boolean - результат выполнения метода
+     * @throws SQLException
+     */
     @Override
     public boolean addAdmin(Admin admin) throws SQLException {
+        if (admin == null) return false;
         Connection connection = connectionManager.getConnection();
         PreparedStatement statement = connection.prepareStatement("INSERT INTO admin (" +
                 "name, login, password) VALUES (?, ?, ?)");
@@ -27,20 +38,24 @@ public class AdminDAO implements I_AdminDAO {
         }
         int countRow = statement.executeUpdate();
         connection.close();
-        if (countRow > 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return countRow > 0;
     }
 
+    /**
+     * Установка полей админа в statement
+     */
     private void setStatementForAdd(Admin admin, PreparedStatement statement) throws SQLException, NoSuchAlgorithmException {
         statement.setString(1, admin.getName());
         statement.setString(2, admin.getLogin());
         statement.setString(3, CryptoUtils.byteArrayToHexString(CryptoUtils.computeHash(admin.getPassword())));
     }
 
-
+    /**
+     * Получить список всех админов
+     *
+     * @return List<Admin>
+     * @throws SQLException
+     */
     @Override
     public List<Admin> getAllAdmins() throws SQLException {
         Connection connection = connectionManager.getConnection();
@@ -52,9 +67,13 @@ public class AdminDAO implements I_AdminDAO {
         return admins;
     }
 
+    /**
+     * Обработка ResultSet
+     */
     private List<Admin> getAdminlistFromResultset(ResultSet resultSet) throws SQLException {
+        if (resultSet == null) return new ArrayList<>();
         List<Admin> admins = new ArrayList<>();
-        Admin admin = null;
+        Admin admin;
         while (resultSet.next()) {
             admin = new Admin(
                     resultSet.getInt("id"),
@@ -66,8 +85,15 @@ public class AdminDAO implements I_AdminDAO {
         return admins;
     }
 
+    /**
+     * Получить админа по логину
+     * @param login
+     * @return Admin
+     * @throws SQLException
+     */
     @Override
     public Admin getAdminByLogin(String login) throws SQLException {
+        if (login == null) return null;
         Connection connection = connectionManager.getConnection();
         PreparedStatement statement = connection.prepareStatement("SELECT * " +
                 "FROM admin WHERE login = ?");
@@ -78,6 +104,12 @@ public class AdminDAO implements I_AdminDAO {
         return admin;
     }
 
+    /**
+     * Получить админа по ID
+     * @param id
+     * @return Admin
+     * @throws SQLException
+     */
     @Override
     public Admin getAdminById(int id) throws SQLException {
         Connection connection = connectionManager.getConnection();
@@ -90,6 +122,9 @@ public class AdminDAO implements I_AdminDAO {
         return admin;
     }
 
+    /**
+     * Обработка ResultSet
+     */
     private Admin getAdminFromResultset(ResultSet resultSet) throws SQLException {
         Admin admin = null;
         if (resultSet.next()) {
@@ -102,21 +137,27 @@ public class AdminDAO implements I_AdminDAO {
         return admin;
     }
 
+    /**
+     * Обновить админа в базе данных
+     * @param admin
+     * @return boolean - результат выполнения метода
+     * @throws SQLException
+     */
     @Override
     public boolean updateAdmin(Admin admin) throws SQLException {
+        if (admin == null) return false;
         Connection connection = connectionManager.getConnection();
         PreparedStatement statement = connection.prepareStatement("UPDATE admin " +
                 "SET name = ?, login = ?, password = ? WHERE id = ?");
         setStatementForUpdate(admin, statement);
         int countRow = statement.executeUpdate();
         connection.close();
-        if (countRow > 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return countRow > 0;
     }
 
+    /**
+     * Обработка statement
+     */
     private void setStatementForUpdate(Admin admin, PreparedStatement statement) throws SQLException {
         try {
             setStatementForAdd(admin, statement);
@@ -126,6 +167,12 @@ public class AdminDAO implements I_AdminDAO {
         statement.setInt(4, admin.getId());
     }
 
+    /**
+     * Удалить админа из базы данных
+     * @param id
+     * @return boolean - результат выполнения метода
+     * @throws SQLException
+     */
     @Override
     public boolean deleteAdminById(int id) throws SQLException {
         Connection connection = connectionManager.getConnection();
@@ -134,10 +181,6 @@ public class AdminDAO implements I_AdminDAO {
         statement.setInt(1, id);
         int countRow = statement.executeUpdate();
         connection.close();
-        if (countRow > 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return countRow > 0;
     }
 }

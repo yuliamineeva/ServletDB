@@ -1,5 +1,8 @@
 package ru.innopolis.stc9.servlet1.pojo;
 
+/**
+ * Класс ролей (POJO - слой)
+ */
 public class Role {
     private int id;
     private String role_name;

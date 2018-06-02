@@ -1,5 +1,8 @@
 package ru.innopolis.stc9.servlet1.pojo;
 
+/**
+ * Класс админа (POJO - слой)
+ */
 public class Admin {
     public static final String ROLE = "admin";
     private int id;
@@ -8,10 +11,8 @@ public class Admin {
     private String password;
 
     public Admin(int id, String name, String login, String password) {
+        this(name, login, password);
         this.id = id;
-        this.name = name;
-        this.login = login;
-        this.password = password;
     }
 
     public Admin(String name, String login, String password) {

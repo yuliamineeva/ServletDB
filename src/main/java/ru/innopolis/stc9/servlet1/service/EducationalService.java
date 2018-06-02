@@ -9,19 +9,27 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+/**
+ * Класс, работающий с DAO -слоем, получающий списки данных из DB
+ */
 public class EducationalService implements I_EducationalService {
     private static Logger logger = Logger.getLogger(EducationalService.class);
-    I_AdminDAO adminDao = new AdminDAO();
-    I_StudentDAO studentDAO = new StudentDAO();
-    I_UserDAO userDAO = new UserDAO();
-    I_RoleDAO roleDAO = new RoleDAO();
-    I_LecturerDAO lecturerDAO = new LecturerDAO();
-    I_StudyCourseDAO studyCourseDAO = new StudyCourseDAO();
-    I_LessonDAO lessonDAO = new LessonDAO();
-    I_MarksDAO marksDAO = new MarksDAO();
-    I_AttendanceDAO attendanceDAO = new AttendanceDAO();
+    private I_AdminDAO adminDao = new AdminDAO();
+    private I_StudentDAO studentDAO = new StudentDAO();
+    private I_UserDAO userDAO = new UserDAO();
+    private I_RoleDAO roleDAO = new RoleDAO();
+    private I_LecturerDAO lecturerDAO = new LecturerDAO();
+    private I_StudyCourseDAO studyCourseDAO = new StudyCourseDAO();
+    private I_LessonDAO lessonDAO = new LessonDAO();
+    private I_MarksDAO marksDAO = new MarksDAO();
+    private I_AttendanceDAO attendanceDAO = new AttendanceDAO();
 
-
+    /**
+     * Получить список всех студентов
+     *
+     * @return List<Student>
+     */
+    @Override
     public List<Student> getAllStudents() {
         try {
             return studentDAO.getAllStudents();
@@ -31,6 +39,12 @@ public class EducationalService implements I_EducationalService {
         return null;
     }
 
+    /**
+     * Получить список всех лекторов
+     *
+     * @return List<Lecturer>
+     */
+    @Override
     public List<Lecturer> getAllLecturers() {
         try {
             return lecturerDAO.getAllLecturers();
@@ -40,6 +54,12 @@ public class EducationalService implements I_EducationalService {
         return null;
     }
 
+    /**
+     * Получить список всех админов
+     *
+     * @return List<Admin>
+     */
+    @Override
     public List<Admin> getAllAdmins() {
         try {
             return adminDao.getAllAdmins();
@@ -49,6 +69,12 @@ public class EducationalService implements I_EducationalService {
         return null;
     }
 
+    /**
+     * Получить список всех пользователей
+     *
+     * @return List<User>
+     */
+    @Override
     public List<User> getAllUsers() {
         try {
             return userDAO.getAllUsers();
@@ -58,6 +84,12 @@ public class EducationalService implements I_EducationalService {
         return null;
     }
 
+    /**
+     * Получить список всех ролей
+     *
+     * @return List<Role>
+     */
+    @Override
     public List<Role> getAllRoles() {
         try {
             return roleDAO.getAllRoles();
@@ -67,6 +99,12 @@ public class EducationalService implements I_EducationalService {
         return null;
     }
 
+    /**
+     * Получить список всех курсов
+     *
+     * @return List<StudyCourse>
+     */
+    @Override
     public List<StudyCourse> getAllStudyCourse() {
         try {
             List<StudyCourse> courses = studyCourseDAO.getAllStudyCourse();
@@ -82,6 +120,11 @@ public class EducationalService implements I_EducationalService {
         return null;
     }
 
+    /**
+     * Получить список всех лекций
+     * @return List<Lesson>
+     */
+    @Override
     public List<Lesson> getAllLessons() {
         try {
             List<Lesson> lessons = lessonDAO.getAllLessons();
@@ -97,6 +140,11 @@ public class EducationalService implements I_EducationalService {
         return null;
     }
 
+    /**
+     * Получить список всех дат, в которые были лекции
+     * @return List<Date>
+     */
+    @Override
     public Set<Date> getAllDatesFromLessons() {
         Set<Date> dates = new HashSet<>();
         try {
@@ -111,6 +159,11 @@ public class EducationalService implements I_EducationalService {
         return dates;
     }
 
+    /**
+     * Получить список всех оценок всех студентов по всем датам
+     * @return List<Marks>
+     */
+    @Override
     public List<Marks> getAllMarks() {
         try {
             List<Marks> marksList = marksDAO.getAllMarks();
@@ -128,6 +181,11 @@ public class EducationalService implements I_EducationalService {
         return null;
     }
 
+    /**
+     * Получить список всех оценок по студенту
+     * @return List<Marks>
+     */
+    @Override
     public List<Marks> getMarksByStudent(Student student) {
         try {
             List<Marks> marksList = marksDAO.getMarksByStudent(student);
@@ -145,6 +203,11 @@ public class EducationalService implements I_EducationalService {
         return null;
     }
 
+    /**
+     * Получить список всех посещений всех студентов по всем датам
+     * @return List<Attendance>
+     */
+    @Override
     public List<Attendance> getAllAttendance() {
         try {
             List<Attendance> attList = attendanceDAO.getAllAttendance();
@@ -161,6 +224,13 @@ public class EducationalService implements I_EducationalService {
         return null;
     }
 
+    /**
+     * выбрать метод для получения необходимого списка
+     * @param chooseLess выбранная лекция
+     * @param chooseDate выбранная дата
+     * @param chooseStudent выбранный студент
+     * @return List<Attendance>
+     */
     public List<Attendance> chooseAttendanceList(String chooseLess, String chooseDate, String chooseStudent) {
         List<Attendance> result = new ArrayList<>();
         if (chooseLess == null && chooseDate == null && chooseStudent == null) {
@@ -178,6 +248,11 @@ public class EducationalService implements I_EducationalService {
         return result;
     }
 
+    /**
+     * Получить список всех посещений по лекции
+     * @return List<Attendance>
+     */
+    @Override
     public List<Attendance> getAttendanceByLesson(int lesson_id) {
         try {
             Lesson lesson = lessonDAO.getLessonById(lesson_id);
@@ -196,6 +271,11 @@ public class EducationalService implements I_EducationalService {
         return null;
     }
 
+    /**
+     * Получить список всех посещений по дате
+     * @return List<Attendance>
+     */
+    @Override
     public List<Attendance> getAttendanceByDate(String date) {
         try {
             Date lessonDate = new SimpleDateFormat("dd.MM.yyyy").parse(date);
@@ -215,6 +295,11 @@ public class EducationalService implements I_EducationalService {
         return null;
     }
 
+    /**
+     * Получить список всех посещений по студенту
+     * @return List<Attendance>
+     */
+    @Override
     public List<Attendance> getAttendanceByStudent(int student_id) {
         try {
             Student student = studentDAO.getStudentById(student_id);

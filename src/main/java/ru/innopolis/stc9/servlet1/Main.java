@@ -14,7 +14,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class Main {
-    public static EducationalService educationalService = new EducationalService();
+    private static EducationalService educationalService = new EducationalService();
     public static UserService userService = new UserService();
     private static Logger logger = Logger.getLogger(Main.class);
 
@@ -25,7 +25,7 @@ public class Main {
         LoginController loginController = new LoginController();
 
 
-        //        Lesson lesson = new Lesson(1, "Lesson1", new Date(), 1);
+//        Lesson lesson = new Lesson(1, "Lesson1", new Date(), 1);
 //        Student student = new Student(2,"Ivan", "loginI", "passw", 0);
 //        Attendance attendance = new Attendance(1, new Date(), 1, lesson, 2, student, true);
 //        System.out.println(attendance);

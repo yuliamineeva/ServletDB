@@ -2,6 +2,9 @@ package ru.innopolis.stc9.servlet1.pojo;
 
 import java.util.Date;
 
+/**
+ * Класс лекций (POJO - слой)
+ */
 public class Lesson {
     private int id;
     private String topic;

@@ -8,30 +8,47 @@ import ru.innopolis.stc9.servlet1.pojo.StudyCourse;
 import java.sql.*;
 import java.util.ArrayList;
 
+/**
+ * Класс лекций, работающий с базой данных
+ */
 public class LessonDAO implements I_LessonDAO {
     private static IConnectionManager connectionManager = ConnectionManagerJDBC.getInstance();
 
+    /**
+     * Добавить лекцию в базу данных
+     *
+     * @param lesson
+     * @return boolean результат выполнения метода
+     * @throws SQLException
+     */
     @Override
     public boolean addLesson(Lesson lesson) throws SQLException {
+        if (lesson == null) return false;
         Connection connection = connectionManager.getConnection();
         PreparedStatement statement = connection.prepareStatement("INSERT INTO lessons " +
                 "(topic, date, studycourse_id) VALUES (?, ?, ?)");
         setStatementForAdd(lesson, statement);
         int countRow = statement.executeUpdate();
         connection.close();
-        if (countRow > 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return countRow > 0;
     }
 
+    /**
+     * Обработка statement
+     */
     private void setStatementForAdd(Lesson lesson, PreparedStatement statement) throws SQLException {
         statement.setString(1, lesson.getTopic());
         statement.setDate(2, new java.sql.Date(lesson.getDate().getTime())); /** преобразование даты из java.util.Date в java.sql.Date */
         statement.setInt(3, lesson.getStudycourse_id());
     }
 
+    /**
+     * Получить лекцию по id
+     *
+     * @param id
+     * @return Lesson
+     * @throws SQLException
+     */
     @Override
     public Lesson getLessonById(int id) throws SQLException {
         Connection connection = connectionManager.getConnection();
@@ -45,7 +62,11 @@ public class LessonDAO implements I_LessonDAO {
         return lesson;
     }
 
+    /**
+     * Обработка resultSet
+     */
     private Lesson getLessonFromResultset(ResultSet resultSet) throws SQLException {
+        if (resultSet == null) return null;
         Lesson lesson = null;
         if (resultSet.next()) {
             lesson = new Lesson(
@@ -61,6 +82,11 @@ public class LessonDAO implements I_LessonDAO {
         return lesson;
     }
 
+    /**
+     * Получить список всех лекций
+     * @return ArrayList<Lesson>
+     * @throws SQLException
+     */
     @Override
     public ArrayList<Lesson> getAllLessons() throws SQLException {
         Connection connection = connectionManager.getConnection();
@@ -72,8 +98,15 @@ public class LessonDAO implements I_LessonDAO {
         return lessonsArrayList;
     }
 
+    /**
+     * Получить список всех лекций по курсу
+     * @param studyCourse
+     * @return ArrayList<Lesson>
+     * @throws SQLException
+     */
     @Override
     public ArrayList<Lesson> getLessonsByStudyCourse(StudyCourse studyCourse) throws SQLException {
+        if (studyCourse == null) return new ArrayList<>();
         Connection connection = connectionManager.getConnection();
         PreparedStatement statement = connection.prepareStatement("SELECT * " +
                 "FROM lessons WHERE studycourse_id = ?");
@@ -84,9 +117,12 @@ public class LessonDAO implements I_LessonDAO {
         return lessonsArrayList;
     }
 
+    /**
+     * обработка resultSet
+     */
     private ArrayList<Lesson> getLessonsListFromResultset(ResultSet resultSet) throws SQLException {
         ArrayList<Lesson> lessonsArrayList = new ArrayList<>();
-        Lesson lesson = null;
+        Lesson lesson;
         while (resultSet.next()) {
             lesson = new Lesson(
                     resultSet.getInt("id"),
@@ -98,21 +134,27 @@ public class LessonDAO implements I_LessonDAO {
         return lessonsArrayList;
     }
 
+    /**
+     * Обновить лекцию в базе данных
+     * @param lesson
+     * @return boolean результат выполнения метода
+     * @throws SQLException
+     */
     @Override
     public boolean updateLesson(Lesson lesson) throws SQLException {
+        if (lesson == null) return false;
         Connection connection = connectionManager.getConnection();
         PreparedStatement statement = connection.prepareStatement("UPDATE lessons " +
                 "SET topic = ?, date = ?, studycourse_id = ? WHERE id = ?");
         setStatementForUpdate(lesson, statement);
         int countRow = statement.executeUpdate();
         connection.close();
-        if (countRow > 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return countRow > 0;
     }
 
+    /**
+     * Обработка statement
+     */
     private void setStatementForUpdate(Lesson lesson, PreparedStatement statement) throws SQLException {
         statement.setString(1, lesson.getTopic());
         statement.setDate(2, new java.sql.Date(lesson.getDate().getTime()));
@@ -120,6 +162,12 @@ public class LessonDAO implements I_LessonDAO {
         statement.setInt(4, lesson.getId());
     }
 
+    /**
+     * Удалить лекцию из базы данных
+     * @param id
+     * @return boolean результат выполнения метода
+     * @throws SQLException
+     */
     @Override
     public boolean deleteLessonById(int id) throws SQLException {
         Connection connection = connectionManager.getConnection();
@@ -128,10 +176,6 @@ public class LessonDAO implements I_LessonDAO {
         statement.setInt(1, id);
         int countRow = statement.executeUpdate();
         connection.close();
-        if (countRow > 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return countRow > 0;
     }
 }

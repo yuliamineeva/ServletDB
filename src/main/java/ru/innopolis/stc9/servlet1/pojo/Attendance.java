@@ -2,6 +2,9 @@ package ru.innopolis.stc9.servlet1.pojo;
 
 import java.util.Date;
 
+/**
+ * Класс посещаемости (POJO - слой)
+ */
 public class Attendance {
     private int id;
     private Date date;

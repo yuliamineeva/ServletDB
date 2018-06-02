@@ -11,25 +11,35 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Класс студента, работающий с базой данных
+ */
 public class StudentDAO implements I_StudentDAO {
     private static IConnectionManager connectionManager = ConnectionManagerJDBC.getInstance();
     private final static Logger logger = Logger.getLogger(StudentDAO.class);
 
+    /**
+     * Добавить студента в базу данных
+     *
+     * @param student
+     * @return boolean результат выполнения метода
+     * @throws SQLException
+     */
     @Override
     public boolean addStudent(Student student) throws SQLException {
+        if (student == null) return false;
         Connection connection = connectionManager.getConnection();
         PreparedStatement statement = connection.prepareStatement("INSERT INTO student " +
                 "(name, login, password, average_mark) VALUES (?, ?, ?, ?)");
         setStatementForAdd(student, statement);
         int countRow = statement.executeUpdate();
         connection.close();
-        if (countRow > 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return countRow > 0;
     }
 
+    /**
+     * Обработка statement
+     */
     private void setStatementForAdd(Student student, PreparedStatement statement) throws SQLException {
         statement.setString(1, student.getName());
         statement.setString(2, student.getLogin());
@@ -41,6 +51,12 @@ public class StudentDAO implements I_StudentDAO {
         statement.setFloat(4, student.getAverageMark());
     }
 
+    /**
+     * Получить список всех студентов
+     *
+     * @return List<Student>
+     * @throws SQLException
+     */
     @Override
     public List<Student> getAllStudents() throws SQLException {
         Connection connection = connectionManager.getConnection();
@@ -57,8 +73,15 @@ public class StudentDAO implements I_StudentDAO {
         return students;
     }
 
+    /**
+     * Получить студента по логину
+     * @param login
+     * @return Student
+     * @throws SQLException
+     */
     @Override
     public Student getStudentByLogin(String login) throws SQLException {
+        if (login == null) return null;
         Connection connection = connectionManager.getConnection();
         PreparedStatement statement = connection.prepareStatement("SELECT * " +
                 "FROM student WHERE login = ?");
@@ -72,6 +95,12 @@ public class StudentDAO implements I_StudentDAO {
         return student;
     }
 
+    /**
+     * Получить студента по id
+     * @param id
+     * @return Student
+     * @throws SQLException
+     */
     @Override
     public Student getStudentById(int id) throws SQLException {
         Connection connection = connectionManager.getConnection();
@@ -87,7 +116,11 @@ public class StudentDAO implements I_StudentDAO {
         return student;
     }
 
+    /**
+     * Обработка resultSet
+     */
     private Student getStudentFromResultset(ResultSet resultSet) throws SQLException {
+        if (resultSet == null) return null;
         Student student = new Student(
                 resultSet.getInt("id"),
                 resultSet.getString("name"),
@@ -97,26 +130,38 @@ public class StudentDAO implements I_StudentDAO {
         return student;
     }
 
+    /**
+     * обновить студента в базе данных
+     * @param student
+     * @return boolean результат выполнения метода
+     * @throws SQLException
+     */
     @Override
     public boolean updateStudent(Student student) throws SQLException {
+        if (student == null) return false;
         Connection connection = connectionManager.getConnection();
         PreparedStatement statement = connection.prepareStatement("UPDATE student " +
                 "SET name = ?, login = ?, password = ?, average_mark = ? WHERE id = ?");
         setStatementForUpdate(student, statement);
         int countRow = statement.executeUpdate();
         connection.close();
-        if (countRow > 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return countRow > 0;
     }
 
+    /**
+     * Обработка statement
+     */
     private void setStatementForUpdate(Student student, PreparedStatement statement) throws SQLException {
         setStatementForAdd(student, statement);
         statement.setInt(5, student.getId());
     }
 
+    /**
+     * удалить студента из базы данных
+     * @param id
+     * @return boolean результат выполнения метода
+     * @throws SQLException
+     */
     @Override
     public boolean deleteStudentById(int id) throws SQLException {
         Connection connection = connectionManager.getConnection();
@@ -125,10 +170,6 @@ public class StudentDAO implements I_StudentDAO {
         statement.setInt(1, id);
         int countRow = statement.executeUpdate();
         connection.close();
-        if (countRow > 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return countRow > 0;
     }
 }

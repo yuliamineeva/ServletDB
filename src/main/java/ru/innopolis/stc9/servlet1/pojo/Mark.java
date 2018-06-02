@@ -13,7 +13,7 @@ public enum Mark {
 
     private String value;
 
-    private Mark(String value) {
+    Mark(String value) {
         this.value = value;
     }
 

@@ -9,6 +9,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * Класс - контроллер, открывающий главную страницу после аутентификации пользователей
+ */
 public class UniversalDashboardController extends HttpServlet {
     private static Logger logger = Logger.getLogger(UniversalDashboardController.class);
     private UserService userService = new UserService();

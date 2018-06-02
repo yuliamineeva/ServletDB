@@ -8,29 +8,46 @@ import ru.innopolis.stc9.servlet1.pojo.StudyCourse;
 import java.sql.*;
 import java.util.ArrayList;
 
+/**
+ * Класс курсов, работающий с базой данных
+ */
 public class StudyCourseDAO implements I_StudyCourseDAO {
     private static IConnectionManager connectionManager = ConnectionManagerJDBC.getInstance();
 
+    /**
+     * Добавить курс в базу данных
+     *
+     * @param studyCourse
+     * @return boolean результат выполнения метода
+     * @throws SQLException
+     */
     @Override
     public boolean addStudyCourse(StudyCourse studyCourse) throws SQLException {
+        if (studyCourse == null) return false;
         Connection connection = connectionManager.getConnection();
         PreparedStatement statement = connection.prepareStatement("INSERT INTO studycourse " +
                 "(name, lecturer_id) VALUES (?, ?)");
         setStatementForAdd(studyCourse, statement);
         int countRow = statement.executeUpdate();
         connection.close();
-        if (countRow > 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return countRow > 0;
     }
 
+    /**
+     * Обработка statement
+     */
     private void setStatementForAdd(StudyCourse studyCourse, PreparedStatement statement) throws SQLException {
         statement.setString(1, studyCourse.getName());
         statement.setInt(2, studyCourse.getLecturer_id());
     }
 
+    /**
+     * Получить курс по id
+     *
+     * @param id
+     * @return StudyCourse
+     * @throws SQLException
+     */
     @Override
     public StudyCourse getStudyCourseById(int id) throws SQLException {
         Connection connection = connectionManager.getConnection();
@@ -44,7 +61,11 @@ public class StudyCourseDAO implements I_StudyCourseDAO {
         return studyCourse;
     }
 
+    /**
+     * Обработка resultSet
+     */
     private StudyCourse getStudyCourseFromResultset(ResultSet resultSet) throws SQLException {
+        if (resultSet == null) return null;
         StudyCourse studyCourse = null;
         if (resultSet.next()) {
             studyCourse = new StudyCourse(
@@ -60,6 +81,11 @@ public class StudyCourseDAO implements I_StudyCourseDAO {
         return studyCourse;
     }
 
+    /**
+     * Получить список всех курсов
+     * @return ArrayList<StudyCourse>
+     * @throws SQLException
+     */
     @Override
     public ArrayList<StudyCourse> getAllStudyCourse() throws SQLException {
         Connection connection = connectionManager.getConnection();
@@ -71,6 +97,12 @@ public class StudyCourseDAO implements I_StudyCourseDAO {
         return courseArrayList;
     }
 
+    /**
+     * Получить список курсов по лектору
+     * @param lecturer
+     * @return ArrayList<StudyCourse>
+     * @throws SQLException
+     */
     @Override
     public ArrayList<StudyCourse> getStudyCourseByLecturer(Lecturer lecturer) throws SQLException {
         Connection connection = connectionManager.getConnection();
@@ -83,9 +115,13 @@ public class StudyCourseDAO implements I_StudyCourseDAO {
         return courseArrayList;
     }
 
+    /**
+     * Обработка resultSet
+     */
     private ArrayList<StudyCourse> getCourseArrayListFromResultset(ResultSet resultSet) throws SQLException {
+        if (resultSet == null) return new ArrayList<>();
         ArrayList<StudyCourse> courseArrayList = new ArrayList<>();
-        StudyCourse studyCourse = null;
+        StudyCourse studyCourse;
         while (resultSet.next()) {
             studyCourse = new StudyCourse(
                     resultSet.getInt("id"),
@@ -96,27 +132,39 @@ public class StudyCourseDAO implements I_StudyCourseDAO {
         return courseArrayList;
     }
 
+    /**
+     * Обновить курс в базе данных
+     * @param studyCourse
+     * @return boolean результат выполнения метода
+     * @throws SQLException
+     */
     @Override
     public boolean updateStudyCourse(StudyCourse studyCourse) throws SQLException {
+        if (studyCourse == null) return false;
         Connection connection = connectionManager.getConnection();
         PreparedStatement statement = connection.prepareStatement("UPDATE studycourse " +
                 "SET name = ?, lecturer_id = ? WHERE id = ?");
         setStatementForUpdate(studyCourse, statement);
         int countRow = statement.executeUpdate();
         connection.close();
-        if (countRow > 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return countRow > 0;
     }
 
+    /**
+     * Обработка statement
+     */
     private void setStatementForUpdate(StudyCourse studyCourse, PreparedStatement statement) throws SQLException {
         statement.setString(1, studyCourse.getName());
         statement.setInt(2, studyCourse.getLecturer_id());
         statement.setInt(3, studyCourse.getId());
     }
 
+    /**
+     * Удалить курс из базы данных
+     * @param id
+     * @return boolean результат выполнения метода
+     * @throws SQLException
+     */
     @Override
     public boolean deleteStudyCourseById(int id) throws SQLException {
         Connection connection = connectionManager.getConnection();
@@ -125,10 +173,6 @@ public class StudyCourseDAO implements I_StudyCourseDAO {
         statement.setInt(1, id);
         int countRow = statement.executeUpdate();
         connection.close();
-        if (countRow > 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return countRow > 0;
     }
 }

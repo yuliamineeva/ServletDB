@@ -1,5 +1,8 @@
 package ru.innopolis.stc9.servlet1.pojo;
 
+/**
+ * Класс курсов (POJO - слой)
+ */
 public class StudyCourse {
     private int id;
     private String name;

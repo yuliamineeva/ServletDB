@@ -11,24 +11,34 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
 
+/**
+ * Класс оценок, работающий с базой данных
+ */
 public class MarksDAO implements I_MarksDAO {
     private static IConnectionManager connectionManager = ConnectionManagerJDBC.getInstance();
 
+    /**
+     * Добавить оценку в базу данных
+     *
+     * @param marks
+     * @return boolean результат выполнения метода
+     * @throws SQLException
+     */
     @Override
     public boolean addMarks(Marks marks) throws SQLException {
+        if (marks == null) return false;
         Connection connection = connectionManager.getConnection();
         PreparedStatement statement = connection.prepareStatement("INSERT INTO marks " +
                 "(date, studycourse_id, lessons_id, student_id, mark) VALUES (?, ?, ?, ?, ?)");
         setStatementForAdd(marks, statement);
         int countRow = statement.executeUpdate();
         connection.close();
-        if (countRow > 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return countRow > 0;
     }
 
+    /**
+     * Обработка statement
+     */
     private void setStatementForAdd(Marks marks, PreparedStatement statement) throws SQLException {
         statement.setDate(1, new java.sql.Date(marks.getDate().getTime())); /** преобразование даты из java.util.Date в java.sql.Date */
         statement.setInt(2, marks.getStudycourse_id());
@@ -37,6 +47,13 @@ public class MarksDAO implements I_MarksDAO {
         statement.setInt(5, marks.getMark().getIntValue());
     }
 
+    /**
+     * Получить оценку по id
+     *
+     * @param id
+     * @return Marks
+     * @throws SQLException
+     */
     @Override
     public Marks getMarksById(int id) throws SQLException {
         Connection connection = connectionManager.getConnection();
@@ -55,7 +72,11 @@ public class MarksDAO implements I_MarksDAO {
         return marks;
     }
 
+    /**
+     * Обработка resultSet
+     */
     private Marks getMarksFromResultset(ResultSet resultSet) throws SQLException {
+        if (resultSet == null) return null;
         Marks marks = null;
         if (resultSet.next()) {
             marks = new Marks(
@@ -84,6 +105,12 @@ public class MarksDAO implements I_MarksDAO {
         return marks;
     }
 
+    /**
+     * Получить список всех оценок
+     *
+     * @return ArrayList<Marks>
+     * @throws SQLException
+     */
     @Override
     public ArrayList<Marks> getAllMarks() throws SQLException {
         Connection connection = connectionManager.getConnection();
@@ -95,8 +122,16 @@ public class MarksDAO implements I_MarksDAO {
         return marksArrayList;
     }
 
+    /**
+     * Получить список оценок по лекции
+     *
+     * @param lesson
+     * @return ArrayList<Marks>
+     * @throws SQLException
+     */
     @Override
     public ArrayList<Marks> getMarksByLesson(Lesson lesson) throws SQLException {
+        if (lesson == null) return new ArrayList<>();
         Connection connection = connectionManager.getConnection();
         PreparedStatement statement = connection.prepareStatement("SELECT * " +
                 "FROM marks WHERE lessons_id = ?");
@@ -107,6 +142,9 @@ public class MarksDAO implements I_MarksDAO {
         return marksArrayList;
     }
 
+    /**
+     * Обработка resultSet
+     */
     private ArrayList<Marks> getMarksListFromResultset(ResultSet resultSet) throws SQLException {
         ArrayList<Marks> marksArrayList = new ArrayList<>();
         Marks marks = null;
@@ -123,8 +161,16 @@ public class MarksDAO implements I_MarksDAO {
         return marksArrayList;
     }
 
+    /**
+     * Получить список оценок по студенту
+     *
+     * @param student
+     * @return ArrayList<Marks>
+     * @throws SQLException
+     */
     @Override
     public ArrayList<Marks> getMarksByStudent(Student student) throws SQLException {
+        if (student == null) return new ArrayList<>();
         Connection connection = connectionManager.getConnection();
         PreparedStatement statement = connection.prepareStatement("SELECT * " +
                 "FROM marks WHERE student_id= ?");
@@ -135,8 +181,16 @@ public class MarksDAO implements I_MarksDAO {
         return marksArrayList;
     }
 
+    /**
+     * Получить список оценок по дате
+     *
+     * @param date
+     * @return ArrayList<Marks>
+     * @throws SQLException
+     */
     @Override
     public ArrayList<Marks> getMarksByDate(Date date) throws SQLException {
+        if (date == null) return new ArrayList<>();
         Connection connection = connectionManager.getConnection();
         PreparedStatement statement = connection.prepareStatement("SELECT * " +
                 "FROM marks WHERE marks.date= ?");
@@ -147,21 +201,28 @@ public class MarksDAO implements I_MarksDAO {
         return marksArrayList;
     }
 
+    /**
+     * Обновить оценку в базе данных
+     *
+     * @param marks
+     * @return boolean результат выполнения метода
+     * @throws SQLException
+     */
     @Override
     public boolean updateMarks(Marks marks) throws SQLException {
+        if (marks == null) return false;
         Connection connection = connectionManager.getConnection();
         PreparedStatement statement = connection.prepareStatement("UPDATE marks " +
                 "SET date = ?, studycourse_id = ?, lessons_id = ?, student_id = ?, mark = ? WHERE id = ?");
         setStatementForUpdate(marks, statement);
         int countRow = statement.executeUpdate();
         connection.close();
-        if (countRow > 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return countRow > 0;
     }
 
+    /**
+     * Обработка statement
+     */
     private void setStatementForUpdate(Marks marks, PreparedStatement statement) throws SQLException {
         statement.setDate(1, new java.sql.Date(marks.getDate().getTime()));
         statement.setInt(2, marks.getStudycourse_id());
@@ -171,6 +232,13 @@ public class MarksDAO implements I_MarksDAO {
         statement.setInt(6, marks.getId());
     }
 
+    /**
+     * Удалить оценку из базы данных
+     *
+     * @param id
+     * @return boolean результат выполнения метода
+     * @throws SQLException
+     */
     @Override
     public boolean deleteMarksById(int id) throws SQLException {
         Connection connection = connectionManager.getConnection();
@@ -179,10 +247,6 @@ public class MarksDAO implements I_MarksDAO {
         statement.setInt(1, id);
         int countRow = statement.executeUpdate();
         connection.close();
-        if (countRow > 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return countRow > 0;
     }
 }

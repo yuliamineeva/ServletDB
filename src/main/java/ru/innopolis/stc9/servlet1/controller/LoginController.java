@@ -9,6 +9,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * Класс - контроллер, сохраняющий данные пользователя в текущей сессии
+ */
 public class LoginController extends HttpServlet {
     private static Logger logger = Logger.getLogger(LoginController.class);
     private UserService userService = new UserService();

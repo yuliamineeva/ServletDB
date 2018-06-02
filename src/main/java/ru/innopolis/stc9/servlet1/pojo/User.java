@@ -1,5 +1,8 @@
 package ru.innopolis.stc9.servlet1.pojo;
 
+/**
+ * Класс пользователя (POJO - слой)
+ */
 public class User {
     private int id;
     private String login;

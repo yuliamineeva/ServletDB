@@ -9,31 +9,46 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Класс пользователя, работающий с базой данных
+ */
 public class UserDAO implements I_UserDAO {
     private static IConnectionManager connectionManager = ConnectionManagerJDBC.getInstance();
 
-
+    /**
+     * Добавить пользователя в базу данных
+     *
+     * @param user
+     * @return boolean результат выполнения метода
+     * @throws SQLException
+     */
     @Override
     public boolean addUser(User user) throws SQLException {
+        if (user == null) return false;
         Connection connection = connectionManager.getConnection();
         PreparedStatement statement = connection.prepareStatement("INSERT INTO users " +
                 "(login, role) VALUES (?, ?)");
         setStatementForAdd(user, statement);
         int countRow = statement.executeUpdate();
         connection.close();
-        if (countRow > 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return countRow > 0;
     }
 
+    /**
+     * Обработка statement
+     */
     private void setStatementForAdd(User user, PreparedStatement statement) throws SQLException {
         statement.setString(1, user.getLogin());
         statement.setInt(2, user.getRole_number());
     }
 
-
+    /**
+     * Получить пользователя по id
+     *
+     * @param id
+     * @return User
+     * @throws SQLException
+     */
     @Override
     public User getUserById(int id) throws SQLException {
         Connection connection = connectionManager.getConnection();
@@ -47,7 +62,11 @@ public class UserDAO implements I_UserDAO {
         return user;
     }
 
+    /**
+     * Обработка resultSet
+     */
     private User getUserFromResultset(ResultSet resultSet) throws SQLException {
+        if (resultSet == null) return null;
         User user = null;
         if (resultSet.next()) {
             user = new User(
@@ -62,8 +81,16 @@ public class UserDAO implements I_UserDAO {
         return user;
     }
 
+    /**
+     * Получить пользователя по логину
+     *
+     * @param login
+     * @return User
+     * @throws SQLException
+     */
     @Override
     public User getUserByLogin(String login) throws SQLException {
+        if (login == null) return null;
         Connection connection = connectionManager.getConnection();
         PreparedStatement statement = connection.prepareStatement("SELECT * " +
                 "FROM users INNER JOIN roles AS r(r_id, r_role_name, r_role) " +
@@ -75,8 +102,16 @@ public class UserDAO implements I_UserDAO {
         return user;
     }
 
+    /**
+     * Получить список пользователей по названию роли
+     *
+     * @param role_name
+     * @return List<User>
+     * @throws SQLException
+     */
     @Override
     public List<User> getAllUsersByRole(String role_name) throws SQLException {
+        if (role_name == null) return new ArrayList<>();
         Connection connection = connectionManager.getConnection();
         PreparedStatement statement = connection.prepareStatement("SELECT * " +
                 "FROM users INNER JOIN roles AS r(r_id, r_role_name, r_role) " +
@@ -88,6 +123,12 @@ public class UserDAO implements I_UserDAO {
         return users;
     }
 
+    /**
+     * Получить список всех пользователей
+     *
+     * @return List<User>
+     * @throws SQLException
+     */
     @Override
     public List<User> getAllUsers() throws SQLException {
         Connection connection = connectionManager.getConnection();
@@ -99,9 +140,13 @@ public class UserDAO implements I_UserDAO {
         return users;
     }
 
+    /**
+     * Обработка resultSet
+     */
     private List<User> getUserlistFromResultset(ResultSet resultSet) throws SQLException {
+        if (resultSet == null) return new ArrayList<>();
         List<User> users = new ArrayList<>();
-        User user = null;
+        User user;
         while (resultSet.next()) {
             user = new User(
                     resultSet.getInt("id"),
@@ -112,27 +157,41 @@ public class UserDAO implements I_UserDAO {
         return users;
     }
 
+    /**
+     * Обновить пользователя в базе данных
+     *
+     * @param user
+     * @return boolean результат выполнения метода
+     * @throws SQLException
+     */
     @Override
     public boolean updateUser(User user) throws SQLException {
+        if (user == null) return false;
         Connection connection = connectionManager.getConnection();
         PreparedStatement statement = connection.prepareStatement("UPDATE users " +
                 "SET login = ?, role = ? WHERE id = ?");
         setStatementForUpdate(user, statement);
         int countRow = statement.executeUpdate();
         connection.close();
-        if (countRow > 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return countRow > 0;
     }
 
+    /**
+     * Обработка statement
+     */
     private void setStatementForUpdate(User user, PreparedStatement statement) throws SQLException {
         statement.setString(1, user.getLogin());
         statement.setInt(2, user.getRole_number());
         statement.setInt(3, user.getId());
     }
 
+    /**
+     * Удалить пользователя из базы данных
+     *
+     * @param id
+     * @return boolean результат выполнения метода
+     * @throws SQLException
+     */
     @Override
     public boolean deleteUserById(int id) throws SQLException {
         Connection connection = connectionManager.getConnection();
@@ -141,11 +200,7 @@ public class UserDAO implements I_UserDAO {
         statement.setInt(1, id);
         int countRow = statement.executeUpdate();
         connection.close();
-        if (countRow > 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return countRow > 0;
     }
 
 }

@@ -10,24 +10,34 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
 
+/**
+ * Класс Посещаемости, работающий с базой данных
+ */
 public class AttendanceDAO implements I_AttendanceDAO {
     private static IConnectionManager connectionManager = ConnectionManagerJDBC.getInstance();
 
+    /**
+     * Добавить посещаемость в базу данных
+     *
+     * @param attendance
+     * @return boolean - результат выполнения метода
+     * @throws SQLException
+     */
     @Override
     public boolean addAttendance(Attendance attendance) throws SQLException {
+        if (attendance == null) return false;
         Connection connection = connectionManager.getConnection();
         PreparedStatement statement = connection.prepareStatement("INSERT INTO attendance " +
                 "(date, lessons_id, student_id, be_present) VALUES (?, ?, ?, ?)");
         setStatementForAdd(attendance, statement);
         int countRow = statement.executeUpdate();
         connection.close();
-        if (countRow > 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return countRow > 0;
     }
 
+    /**
+     * Обработка statement
+     */
     private void setStatementForAdd(Attendance attendance, PreparedStatement statement) throws SQLException {
         statement.setDate(1, new java.sql.Date(attendance.getDate().getTime())); /** преобразование даты из java.util.Date в java.sql.Date */
         statement.setInt(2, attendance.getLesson_id());
@@ -35,6 +45,13 @@ public class AttendanceDAO implements I_AttendanceDAO {
         statement.setBoolean(4, attendance.isBe_present());
     }
 
+    /**
+     * Получить посещаемость по id
+     *
+     * @param id
+     * @return Attendance
+     * @throws SQLException
+     */
     @Override
     public Attendance getAttendanceById(int id) throws SQLException {
         Connection connection = connectionManager.getConnection();
@@ -51,7 +68,11 @@ public class AttendanceDAO implements I_AttendanceDAO {
         return attendance;
     }
 
+    /**
+     * Обработка resultSet
+     */
     private Attendance getAttendanceFromResultset(ResultSet resultSet) throws SQLException {
+        if (resultSet == null) return null;
         Attendance attendance = null;
         if (resultSet.next()) {
             attendance = new Attendance(
@@ -75,6 +96,11 @@ public class AttendanceDAO implements I_AttendanceDAO {
         return attendance;
     }
 
+    /**
+     * Получить список всех посещений
+     * @return ArrayList<Attendance>
+     * @throws SQLException
+     */
     @Override
     public ArrayList<Attendance> getAllAttendance() throws SQLException {
         Connection connection = connectionManager.getConnection();
@@ -86,8 +112,15 @@ public class AttendanceDAO implements I_AttendanceDAO {
         return attArrayList;
     }
 
+    /**
+     * Получить список всех посещений по лекции
+     * @param lesson
+     * @return ArrayList<Attendance>
+     * @throws SQLException
+     */
     @Override
     public ArrayList<Attendance> getAttendanceByLesson(Lesson lesson) throws SQLException {
+        if (lesson == null) return new ArrayList<>();
         Connection connection = connectionManager.getConnection();
         PreparedStatement statement = connection.prepareStatement("SELECT * " +
                 "FROM attendance WHERE lessons_id = ?");
@@ -98,9 +131,12 @@ public class AttendanceDAO implements I_AttendanceDAO {
         return attArrayList;
     }
 
+    /**
+     * Обработка resultSet
+     */
     private ArrayList<Attendance> getAttendanceListFromResultset(ResultSet resultSet) throws SQLException {
         ArrayList<Attendance> attArrayList = new ArrayList<>();
-        Attendance attendance = null;
+        Attendance attendance;
         while (resultSet.next()) {
             attendance = new Attendance(
                     resultSet.getInt("id"),
@@ -113,8 +149,15 @@ public class AttendanceDAO implements I_AttendanceDAO {
         return attArrayList;
     }
 
+    /**
+     * Получить список всех посещений по студенту
+     * @param student
+     * @return ArrayList<Attendance>
+     * @throws SQLException
+     */
     @Override
     public ArrayList<Attendance> getAttendanceByStudent(Student student) throws SQLException {
+        if (student == null) return new ArrayList<>();
         Connection connection = connectionManager.getConnection();
         PreparedStatement statement = connection.prepareStatement("SELECT * " +
                 "FROM attendance WHERE student_id = ?");
@@ -125,8 +168,15 @@ public class AttendanceDAO implements I_AttendanceDAO {
         return attArrayList;
     }
 
+    /**
+     * Получить список всех посещений по дате
+     * @param date
+     * @return ArrayList<Attendance>
+     * @throws SQLException
+     */
     @Override
     public ArrayList<Attendance> getAttendanceByDate(Date date) throws SQLException {
+        if (date == null) return new ArrayList<>();
         Connection connection = connectionManager.getConnection();
         PreparedStatement statement = connection.prepareStatement("SELECT * " +
                 "FROM attendance WHERE attendance.date = ?");
@@ -137,21 +187,27 @@ public class AttendanceDAO implements I_AttendanceDAO {
         return attArrayList;
     }
 
+    /**
+     * Обновить посещаемость в базе данных
+     * @param attendance
+     * @return boolean результат выполнения метода
+     * @throws SQLException
+     */
     @Override
     public boolean updateAttendance(Attendance attendance) throws SQLException {
+        if (attendance == null) return false;
         Connection connection = connectionManager.getConnection();
         PreparedStatement statement = connection.prepareStatement("UPDATE attendance " +
                 "SET date = ?, lessons_id = ?, student_id = ?, be_present = ? WHERE id = ?");
         setStatementForUpdate(attendance, statement);
         int countRow = statement.executeUpdate();
         connection.close();
-        if (countRow > 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return countRow > 0;
     }
 
+    /**
+     * Обработка statement
+     */
     private void setStatementForUpdate(Attendance attendance, PreparedStatement statement) throws SQLException {
         statement.setDate(1, new java.sql.Date(attendance.getDate().getTime()));
         statement.setInt(2, attendance.getLesson_id());
@@ -160,6 +216,12 @@ public class AttendanceDAO implements I_AttendanceDAO {
         statement.setInt(5, attendance.getId());
     }
 
+    /**
+     * Удалить посещзаемость по id
+     * @param id
+     * @return boolean результат выполнения метода
+     * @throws SQLException
+     */
     @Override
     public boolean deleteAttendanceById(int id) throws SQLException {
         Connection connection = connectionManager.getConnection();

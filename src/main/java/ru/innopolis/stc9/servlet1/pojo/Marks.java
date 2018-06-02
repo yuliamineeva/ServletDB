@@ -2,6 +2,9 @@ package ru.innopolis.stc9.servlet1.pojo;
 
 import java.util.Date;
 
+/**
+ * Класс оценок (POJO - слой)
+ */
 public class Marks {
     private int id;
     private Date date;
@@ -120,6 +123,12 @@ public class Marks {
         this.mark = mark;
     }
 
+    /**
+     * Получить Mark из Enum
+     *
+     * @param intValue
+     * @return Mark
+     */
     public Mark getMarkByInt(int intValue) {
         switch (intValue) {
             case 1:

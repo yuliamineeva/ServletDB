@@ -14,7 +14,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-
+/**
+ * Класс - контроллер, выводящий списки данных
+ */
 public class ListController extends HttpServlet {
     private final static Logger logger = Logger.getLogger(ListController.class);
     private EducationalService educationalService = new EducationalService();
@@ -108,7 +110,6 @@ public class ListController extends HttpServlet {
             } else if ((Integer) role == 3) {
                 marks = educationalService.getMarksByStudent(currentStudent);
                 float averageMark = userService.calculateAverageMark(currentStudent);
-                System.out.println(averageMark);
                 req.getSession().setAttribute("marks", marks);
                 req.getSession().setAttribute("averageMark", averageMark);
                 req.getRequestDispatcher("/marks.jsp").forward(req, resp);
