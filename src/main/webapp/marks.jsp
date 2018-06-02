@@ -11,7 +11,9 @@
         <%
             Integer role = (Integer) request.getSession().getAttribute("role");
         %>
+        <%if (role == 3) {%>
         <c:out value="Средний балл - ${sessionScope.averageMark}"/>
+        <% } %>
         <br>
         <div class="marks">
             <table align="center" width="100%" border="1" style="border-color:blue;">

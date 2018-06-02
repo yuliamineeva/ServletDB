@@ -43,7 +43,7 @@
         <br>
 
         <div class="attendance">
-            <table align="center" width="80%" border="1" style="border-color:blue;">
+            <table align="center" width="100%" border="1" style="border-color:blue;">
                 <tr>
                     <%if (role != 3) {%>
                     <th align="center">ID посещения</th>

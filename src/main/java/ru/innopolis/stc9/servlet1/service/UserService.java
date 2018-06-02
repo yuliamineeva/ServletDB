@@ -13,12 +13,27 @@ import java.util.ArrayList;
  * Класс, работающий с DAO -слоем, выводящий данные по пользователям
  */
 public class UserService implements I_UserService {
-    private static I_UserDAO userDao = new UserDAO();
+    private I_UserDAO userDao = new UserDAO();
     private I_AdminDAO adminDAO = new AdminDAO();
     private I_LecturerDAO lecturerDAO = new LecturerDAO();
     private I_StudentDAO studentDAO = new StudentDAO();
     private I_MarksDAO marksDAO = new MarksDAO();
     private final static Logger logger = Logger.getLogger(AdminDAO.class);
+
+    public UserService() {
+    }
+
+    /**
+     * Конструктор для тестирования
+     *
+     * @param userDao
+     * @param studentDAO
+     */
+    public UserService(I_UserDAO userDao, I_StudentDAO studentDAO, I_MarksDAO marksDAO) {
+        this.userDao = userDao;
+        this.studentDAO = studentDAO;
+        this.marksDAO = marksDAO;
+    }
 
     /**
      * Получить пользователя из базы данных по логину

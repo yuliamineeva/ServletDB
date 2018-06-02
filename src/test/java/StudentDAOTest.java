@@ -26,10 +26,13 @@ public class StudentDAOTest {
     public static void beforeTests() {
         logger.info("@BeforeClass");
         studentsTest = new ArrayList<>();
-        studentsTest.add(new Student(1, null, null, null, 0));
-        studentsTest.add(new Student(2, null, null, null, 0));
-        studentsTest.add(new Student(3, null, null, null, 0));
-        studentsTest.add(new Student(4, null, null, null, 0));
+        studentsTest.add(new Student(1, "name1", "login1", "passw1", 5));
+        studentsTest.add(new Student(2, "name2", "login2", "passw2", 4));
+        studentsTest.add(new Student(3, "name3", "login3", "passw3", 5));
+        studentsTest.add(new Student(4, "name4", "login4", "passw4", 5));
+        studentsTest.add(new Student(5, "name5", "login5", "passw5", 4));
+        studentsTest.add(new Student(6, "name6", "login6", "passw6", 5));
+        studentsTest.add(new Student(7, "name7", "login7", "passw7", 5));
     }
 
     @Before

@@ -147,7 +147,7 @@ public class MarksDAO implements I_MarksDAO {
      */
     private ArrayList<Marks> getMarksListFromResultset(ResultSet resultSet) throws SQLException {
         ArrayList<Marks> marksArrayList = new ArrayList<>();
-        Marks marks = null;
+        Marks marks;
         while (resultSet.next()) {
             marks = new Marks(
                     resultSet.getInt("id"),

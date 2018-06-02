@@ -130,11 +130,11 @@ H2 {
 
 .container {
     width: 70%;
-    overflow: hidden;
+    overflow: auto;
 }
 
 .content {
-    padding: 30px 0 0 50px;
+    padding: 30px 0 30px 50px;
 }
 
 /* Left Sidebar

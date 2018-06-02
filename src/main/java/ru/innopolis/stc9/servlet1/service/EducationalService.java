@@ -24,6 +24,18 @@ public class EducationalService implements I_EducationalService {
     private I_MarksDAO marksDAO = new MarksDAO();
     private I_AttendanceDAO attendanceDAO = new AttendanceDAO();
 
+    public EducationalService() {
+    }
+
+    /**
+     * Конструктор для тестирования
+     */
+    public EducationalService(I_StudentDAO studentDAO, I_LessonDAO lessonDAO, I_AttendanceDAO attendanceDAO) {
+        this.studentDAO = studentDAO;
+        this.lessonDAO = lessonDAO;
+        this.attendanceDAO = attendanceDAO;
+    }
+
     /**
      * Получить список всех студентов
      *
