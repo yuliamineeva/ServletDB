@@ -47,7 +47,7 @@ public class UserService implements I_UserService {
         try {
             user = userDao.getUserByLogin(login);
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error trying to get User", e);
         }
         return user;
     }
@@ -64,7 +64,7 @@ public class UserService implements I_UserService {
         try {
             student = studentDAO.getStudentByLogin(login);
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error trying to get Student", e);
         }
         return student;
     }
@@ -141,7 +141,7 @@ public class UserService implements I_UserService {
                     try {
                         admin = adminDAO.getAdminByLogin(login);
                     } catch (SQLException e) {
-                        e.printStackTrace();
+                        logger.error("Error trying to get Admin", e);
                     }
                     userInfo = admin.toString();
                     break;
@@ -150,7 +150,7 @@ public class UserService implements I_UserService {
                     try {
                         lecturer = lecturerDAO.getLecturerByLogin(login);
                     } catch (SQLException e) {
-                        e.printStackTrace();
+                        logger.error("Error trying to get lecturer", e);
                     }
                     userInfo = lecturer.toString();
                     break;
@@ -160,7 +160,7 @@ public class UserService implements I_UserService {
                         student = studentDAO.getStudentByLogin(login);
                         student.setAverageMark(calculateAverageMark(student));
                     } catch (SQLException e) {
-                        e.printStackTrace();
+                        logger.error("Error trying to get Student", e);
                     }
                     userInfo = student.toString();
                     break;

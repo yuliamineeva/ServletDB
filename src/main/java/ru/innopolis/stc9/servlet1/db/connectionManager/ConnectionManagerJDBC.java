@@ -1,5 +1,7 @@
 package ru.innopolis.stc9.servlet1.db.connectionManager;
 
+import org.apache.log4j.Logger;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -9,6 +11,7 @@ import java.sql.SQLException;
  */
 public class ConnectionManagerJDBC implements IConnectionManager {
     private static IConnectionManager connectionManager;
+    private final static Logger logger = Logger.getLogger(ConnectionManagerJDBC.class);
 
     private ConnectionManagerJDBC() {
     }
@@ -30,9 +33,9 @@ public class ConnectionManagerJDBC implements IConnectionManager {
                     "postgres",
                     "root");
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            logger.error("ClassNotFoundException", e);
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("database connection error", e);
         }
         return connection;
     }

@@ -40,7 +40,7 @@ public class UserServiceTest {
             when(mockUserDAO.getUserByLogin("ivanov")).thenReturn(user1);
             when(mockMarksDAO.getMarksByStudent(student1)).thenReturn(marksList);
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Mockito Error", e);
         }
     }
 
